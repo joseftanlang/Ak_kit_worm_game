@@ -1,8 +1,8 @@
-#include "obj_border.h"
+#include "worm_game_border.h"
 
 #define BORDER_MARGIN 1
 
-border_t game_border = {0};
+worm_game_border_t game_border = {0};
 
 void border_settings(void) {
 	game_border.x = BORDER_MARGIN;

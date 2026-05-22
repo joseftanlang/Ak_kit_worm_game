@@ -24,12 +24,12 @@
 #include "screens.h"
 #include "screens_bitmap.h"
 
-#include "obj_apple.h"
-#include "obj_border.h"
-#include "obj_eating.h"
-#include "obj_worm.h"
-#include "obj_score.h"
-#include "obj_lives.h"
+#include "worm_game_border.h"
+#include "worm_game_eating.h"
+#include "worm_game_worm.h"
+#include "worm_game_score.h"
+#include "worm_game_lives.h"
+#include "worm_game_apple.h"
 
 // extern zw_game_setting_t settingsetup;
 

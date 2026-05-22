@@ -1,4 +1,6 @@
 #include "scr_startup.h"
+#include "app.h"
+#include "app_dbg.h"
 
 static void view_scr_startup();
 
@@ -42,18 +44,16 @@ void scr_startup_handle(ak_msg_t *msg) {
 		APP_DBG_SIG("AC_DISPLAY_INITIAL\n");
 		view_render.initialize();
 		view_render_display_on();
+		view_render_screen(&scr_startup);
 		timer_set(AC_TASK_DISPLAY_ID, AC_DISPLAY_SHOW_LOGO, AC_DISPLAY_STARTUP_INTERVAL, TIMER_ONE_SHOT);
 	} break;
 
-	case AC_DISPLAY_BUTON_MODE_PRESSED: {
-		APP_DBG_SIG("AC_DISPLAY_BUTON_MODE_PRESSED\n");
-		timer_remove_attr(AC_TASK_DISPLAY_ID, AC_DISPLAY_SHOW_LOGO);
-		SCREEN_TRAN(scr_qrcode_handle, &scr_qrcode);
-	} break;
-
+	case AC_DISPLAY_BUTON_MODE_PRESSED:
+	case AC_DISPLAY_BUTON_UP_PRESSED:
+	case AC_DISPLAY_BUTON_DOWN_PRESSED:
 	case AC_DISPLAY_SHOW_LOGO: {
-		APP_DBG_SIG("AC_DISPLAY_SHOW_LOGO\n");
-		SCREEN_TRAN(scr_qrcode_handle, &scr_qrcode);
+		APP_DBG_SIG("AC_DISPLAY_MENU_SCREEN\n");
+		SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
 	} break;
 
 	case AC_DISPLAY_SHOW_IDLE: {

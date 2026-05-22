@@ -22,12 +22,11 @@
 #include <vector>
 
 #include "screens_bitmap.h"
-#include "scr_worm.h"
 
 //codes
-#define MAX_APPLES      (5)
-#define APPLE_WIDTH     (7)
-#define APPLE_HEIGHT    (7)
+#define MAX_APPLES      (8)
+#define APPLE_WIDTH     (10)
+#define APPLE_HEIGHT    (10)
 
 enum {
 	AC_APPLE_INIT = AK_USER_DEFINE_SIG,
@@ -43,9 +42,9 @@ typedef struct {
 	uint8_t life_seconds;
 	uint8_t respawn_seconds;
     uint8_t apple_image;
-} apple_t;
+} worm_game_apple_t;
 
-extern apple_t apples_no[MAX_APPLES];
+extern worm_game_apple_t apples_no[MAX_APPLES];
 
 void counting_apples(void);
 void apple_init(void);

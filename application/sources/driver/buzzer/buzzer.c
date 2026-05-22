@@ -6,7 +6,7 @@
 volatile       uint32_t          _beep_duration;
 volatile       bool              _tones_playing;
 volatile const Tone_TypeDef     *_tones;
-volatile       bool              _buzzer_silent = BUZZER_SILENT_OFF;
+volatile       bool              _buzzer_silent = BUZZER_SILENT_ON;
 
 GPIO_InitTypeDef GPIO_InitStructure;
 

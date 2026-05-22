@@ -1,5 +1,5 @@
-#ifndef __OBJ_BORDER_H__
-#define __OBJ_BORDER_H__
+#ifndef __SCR_CHARTS_H__
+#define __SCR_CHARTS_H__
 
 //includes
 #include "fsm.h"
@@ -15,6 +15,7 @@
 #include "task_list.h"
 #include "task_display.h"
 #include "view_render.h"
+#include "app_eeprom.h"
 
 #include "buzzer.h"
 
@@ -22,20 +23,12 @@
 #include <vector>
 
 #include "screens_bitmap.h"
-#include "scr_worm.h"
-
-typedef struct {
-    uint32_t x;
-    uint32_t y;
-    uint32_t width;
-    uint32_t height;
-} border_t;
 
 //codes
 
-void border_settings(void);
-void game_border_handler(ak_msg_t* msg);
+extern view_dynamic_t dyn_view_charts;
+extern view_screen_t scr_charts;
+extern void scr_charts_handle(ak_msg_t* msg);
 
-extern border_t game_border;
 
-#endif //__OBJ_BORDER_H__
+#endif //__SCR_CHARTS_H__

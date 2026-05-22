@@ -22,38 +22,51 @@
 #include <vector>
 
 #include "screens_bitmap.h"
-#include "scr_worm.h"
 
 //codes
 #define WORM_START_POSITION_X  (50)
 #define WORM_START_POSITION_Y  (35)
 #define WORM_START_WIDTH       (20)
 #define WORM_START_HEIGHT      (5)
-#define INCREMENT_WORM_SIZE    (5) //increment only the width of the worm when it eats an apple
+
+#ifndef WORM_MOVE_STEP
+#define WORM_MOVE_STEP         (5)
+#endif
+
+#define WORM_MAX_TRAIL         (384)
+#define WORM_INITIAL_LENGTH    (4)
+
+typedef struct {
+    uint8_t x;
+    uint8_t y;
+} worm_game_point_t;
 
 typedef struct {
     uint32_t x;
     uint32_t y;
     uint32_t width;
     uint32_t height;
-    uint8_t worm_image;
-    uint8_t dir; /* worm_dir_t value */
-} worm_t;
+    uint8_t worm_image;         
+    uint8_t dir;                /* worm_game_dir_t value */
+    uint16_t length;            /* number of segments in the worm trail (including head) */ 
+    uint16_t grow_pending;      /* number of segments to grow (not yet applied to length) */
+    worm_game_point_t trail[WORM_MAX_TRAIL];
+} worm_game_t;
 
 typedef enum {
     WORM_DIR_RIGHT = 0,
     WORM_DIR_DOWN,
     WORM_DIR_LEFT,
     WORM_DIR_UP,
-} worm_dir_t;
+} worm_game_dir_t;
 
-extern worm_t game_worm;
+extern worm_game_t game_worm;
 
 /* Object-only (movement and input handled by screen code) */
 void worm_init(void);
-void worm_set_direction(worm_dir_t d);
-worm_dir_t worm_get_direction(void);
-void worm_advance(void);
+void worm_set_direction(worm_game_dir_t d);
+worm_game_dir_t worm_get_direction(void);
+uint8_t worm_advance(void);
 void worm_grow(void);
 
 /* message signals for `game_worm_handler` */

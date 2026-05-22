@@ -22,19 +22,34 @@
 #include <vector>
 
 #include "screens_bitmap.h"
-#include "scr_worm.h"
 
 //codes
 
-#define START_SCORE     (10)
-#define INCREMENT_SCORE (5)
+#define START_SCORE     (0)
+#define INCREMENT_SCORE (1)
 
 typedef struct {
     uint32_t x;
     uint32_t y;
     uint32_t score;
-} score_display_t;
+} worm_game_score_display_t;
 
-void score_display_t 
+void score_init(void);
+void score_reset(void);
+void score_inc(void);
+uint32_t score_get(void);
+void score_commit_current(void);
+uint32_t score_top_get(uint8_t index);
+
+void game_score_handler(ak_msg_t* msg);
+
+/* message signals for `game_score_handler` */
+enum {
+    AC_SCORE_INIT = AK_USER_DEFINE_SIG + 10,
+    AC_SCORE_INC,
+    AC_SCORE_RESET,
+    AC_SCORE_COMMIT,
+    AC_SCORE_TOP_GET,
+};
 
 #endif //__OBJ_SCORE_H__

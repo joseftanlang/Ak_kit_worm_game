@@ -112,6 +112,7 @@ void scr_mng_back() {
 	screen_manager->screen = target;
 
 	screen_manager->screen(&screen_msg_entry);
+	screen_render_started = true;
 }
 
 void scr_mng_contain_screen_none_update_mark() {

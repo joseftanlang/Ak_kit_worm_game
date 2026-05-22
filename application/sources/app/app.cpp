@@ -71,6 +71,7 @@
 #endif
 
 #include "buzzer.h"
+#include "scr_setting.h"
 
 /* ----------------------- Json includes ------------------------------------*/
 //#include "json.hpp"
@@ -162,7 +163,11 @@ int main_app() {
 
 	/* siren init */
 	BUZZER_Init();
-	BUZZER_PlaySound(BUZZER_SOUND_STARTUP);
+	if (scr_game_setting_is_buzzer_enabled()) {
+		BUZZER_PlaySound(BUZZER_SOUND_STARTUP);
+	} else {
+		BUZZER_Silent(true);
+	}
 
 	/* get boot share data */
 	flash_read(APP_FLASH_INTTERNAL_SHARE_DATA_SECTOR_1, reinterpret_cast<uint8_t*>(&boot_app_share_data), sizeof(boot_app_share_data_t));

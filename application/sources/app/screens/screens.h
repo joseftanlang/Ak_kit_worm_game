@@ -22,6 +22,8 @@
 
 #include "qrcode.h"
 #include "screens_bitmap.h"
+#include "scr_charts.h"
+#include "scr_menu.h"
 
 // scr_idle
 extern view_dynamic_t dyn_view_idle;
@@ -42,5 +44,20 @@ extern void scr_startup_handle(ak_msg_t* msg);
 extern view_dynamic_t dyn_view_welcome;
 extern view_screen_t scr_welcome;
 extern void scr_welcome_handle(ak_msg_t* msg);
+
+// scr_worm
+extern view_dynamic_t dyn_view_item_worm;
+extern view_screen_t scr_worm;
+extern void scr_worm_handle(ak_msg_t* msg);
+
+// scr_charts
+extern view_dynamic_t dyn_view_charts;
+extern view_screen_t scr_charts;
+extern void scr_charts_handle(ak_msg_t* msg);
+
+// scr_menu
+extern view_dynamic_t dyn_view_item_menu_game;
+extern view_screen_t scr_menu_game;
+extern void scr_menu_game_handle(ak_msg_t* msg);
 
 #endif //__SCREENS_H__

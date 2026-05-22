@@ -1,6 +1,6 @@
-#include "obj_eating.h"
+#include "worm_game_eating.h"
 
-eating_effect_t game_eating = {0};
+workm_game_eating_effect_t game_eating = {0};
 
 void eating_effect_init(void)
 {
@@ -51,7 +51,7 @@ void game_eating_handler(ak_msg_t *msg)
 	case AC_EATING_INIT:
 		eating_effect_init();
 		break;
-
+		
 	case AC_EATING_START:
 		eating_effect_start(msg->if_sig, msg->ref_count);
 		break;

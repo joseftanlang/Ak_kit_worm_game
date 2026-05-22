@@ -10,3 +10,6 @@ SOURCES_CPP += sources/app/screens/scr_qrcode.cpp
 SOURCES_CPP += sources/app/screens/scr_startup.cpp
 SOURCES_CPP += sources/app/screens/scr_welcome.cpp
 SOURCES_CPP += sources/app/screens/scr_worm.cpp
+SOURCES_CPP += sources/app/screens/scr_setting.cpp
+SOURCES_CPP += sources/app/screens/scr_charts.cpp
+SOURCES_CPP += sources/app/screens/scr_menu.cpp

@@ -22,7 +22,6 @@
 #include <vector>
 
 #include "screens_bitmap.h"
-#include "scr_worm.h"
 
 //codes
 #define START_LIVES     (3)
@@ -39,9 +38,9 @@ typedef struct {
     uint32_t x;
     uint32_t y;
     uint32_t amount_lives;
-} life_icon_t;
+} worm_game_lives_icon_t;
 
-extern life_icon_t game_lives;
+extern worm_game_lives_icon_t game_lives;
 
 void lives_init(void);
 void lives_reset(void);

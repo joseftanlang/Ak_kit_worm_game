@@ -1,5 +1,6 @@
-#include "obj_apple.h"
-#include "obj_border.h"
+#include "worm_game_apple.h"
+#include "worm_game_border.h"
+#include "scr_worm.h"
 
 #include <stdlib.h>
 
@@ -16,7 +17,21 @@
 #define APPLE_RANDOM_TRIES 32
 #define APPLE_BORDER_PADDING 1
 
-apple_t apples_no[MAX_APPLES];
+static uint16_t worm_max_length(void) {
+	uint32_t border_w = (game_border.width != 0) ? game_border.width : SCR_WIDTH;
+	uint32_t border_h = (game_border.height != 0) ? game_border.height : SCR_HEIGHT;
+	uint32_t max_cols = border_w / WORM_MOVE_STEP;
+	uint32_t max_rows = border_h / WORM_MOVE_STEP;
+	uint32_t max_length = max_cols * max_rows;
+
+	if (max_length == 0) {
+		return 1;
+	}
+
+	return (max_length > WORM_MAX_TRAIL) ? WORM_MAX_TRAIL : (uint16_t)max_length;
+}
+
+worm_game_apple_t apples_no[MAX_APPLES];
 
 static uint32_t apple_random_u32(uint32_t min_value, uint32_t max_value) {
 	if (max_value <= min_value) {
@@ -91,7 +106,7 @@ static uint8_t apple_spawn_slot(uint8_t index) {
 		apples_no[index].is_active = 1;
 		apples_no[index].life_seconds = APPLE_LIFE_SECONDS;
 		apples_no[index].respawn_seconds = 0;
-		apples_no[index].apple_image = 0;
+		apples_no[index].apple_image = (uint8_t)(rand() & 1);
 		return 1;
 	}
 
@@ -125,13 +140,20 @@ void apple_init(void) {
 // counting the number of apples
 void counting_apples(void)
 {
+	if (worm_game_is_finished()) {
+		return;
+	}
+
 	for (uint8_t i = 0; i < MAX_APPLES; i++) {
 		if (apples_no[i].is_active) {
 			if (apple_rect_overlap(apples_no[i].x, apples_no[i].y, apples_no[i].width, apples_no[i].height,
 							   game_worm.x, game_worm.y, game_worm.width, game_worm.height)) {
 				/* worm ate this apple */
+				score_inc();
 				worm_grow();
-				lives_inc();
+				if (game_worm.length >= worm_max_length()) {
+					worm_game_finish(1);
+				}
 				apples_no[i].is_active = 0;
 				apples_no[i].life_seconds = 0;
 				apples_no[i].respawn_seconds = APPLE_RESPAWN_SECONDS;

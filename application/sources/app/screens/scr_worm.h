@@ -23,12 +23,12 @@
 
 #include "screens_bitmap.h"
 
-#include "obj_apple.h"
-#include "obj_border.h"
-#include "obj_eating.h"
-#include "obj_lives.h"
-#include "obj_score.h"
-#include "obj_worm.h"
+#include "worm_game_border.h"
+#include "worm_game_eating.h"
+#include "worm_game_lives.h"
+#include "worm_game_score.h"
+#include "worm_game_worm.h"
+#include "worm_game_apple.h"
 
 #define SCR_WIDTH 128
 #define SCR_HEIGHT 64
@@ -39,5 +39,9 @@ extern view_dynamic_t dyn_view_item_worm;
 extern view_screen_t scr_worm;
 extern void scr_worm_handle(ak_msg_t* msg);
 extern void game_gamer_handler(ak_msg_t* msg);
+extern uint8_t worm_game_is_finished(void);
+extern uint8_t worm_game_is_won(void);
+extern void worm_game_finish(uint8_t won);
+extern void worm_game_reset(void);
 
 #endif //__SCR_WORM_H__

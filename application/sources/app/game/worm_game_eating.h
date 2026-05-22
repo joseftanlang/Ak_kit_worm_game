@@ -39,9 +39,9 @@ typedef struct {
     uint32_t y;
     uint32_t radius;
     uint8_t eating_image;
-} eating_effect_t;
+} workm_game_eating_effect_t;
 
-extern eating_effect_t game_eating;
+extern workm_game_eating_effect_t game_eating;
 
 void eating_effect_init(void);
 void eating_effect_start(uint32_t x, uint32_t y);
