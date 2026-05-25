@@ -16,19 +16,41 @@ If you just want to understand the game quickly, this is the shortest path:
 2. Flash the application to the board at `0x08003000`.
 3. Use Mode to enter or confirm.
 4. Use Up and Down to move through menus and settings.
-5. Enter the worm screen, move the worm, eat apples, and avoid collisions.
+5. Enter the worm screen, move the worm, eat apples, and avoid collisions to itself.
 
 ```mermaid
 flowchart TD
-	A[Boot board] --> B[Open game menu]
-	B --> C[Enter worm screen]
-	C --> D[Move with Up / Down]
-	D --> E[Eat apples and grow]
-	E --> F{Crash or win?}
-	F -->|No| D
-	F -->|Yes| G[Show result overlay]
-	G --> H[Open score chart or return]
+ A[Boot board] --> B[Open game menu]
+ B --> C[Enter worm screen]
+ C --> D[Move with Up / Down]
+ D --> E[Eat apples and grow]
+ E --> F{Crash or win?}
+ F -->|No| D
+ F -->|Yes| G[Show result overlay]
+ G --> H[Open score chart or return]
 ```
+
+## Contents
+
+Use this table to jump to major sections in this README.
+
+- [Quick Start](#quick-start)
+- [Contents](#contents)
+- [How To Read This Project](#how-to-read-this-project)
+- [What This Game Is About](#what-this-game-is-about)
+- [Main Features](#main-features)
+- [Hardware Context](#hardware-context)
+- [Memory Map](#memory-map)
+- [Game Flow](#game-flow)
+- [Game design](#game-design)
+- [Internal Game IDs and Tasks](#internal-game-ids-and-tasks)
+- [Settings](#settings)
+- [Controls](#controls)
+- [Build](#build)
+- [Development (Build & Flash)](#development-build--flash)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support & Resources](#support--resources)
 
 ## How To Read This Project
 
@@ -36,9 +58,9 @@ flowchart TD
 - If you are changing firmware behavior, focus on internal game IDs, task ownership, and settings persistence.
 - If you are building or flashing, jump straight to the build and flashing sections.
 
-## What This Game Is
+## What This Game Is About
 
-Worm is a compact arcade game built for the display and controls on the kit. The player moves a worm around the screen, eats apples, avoids crashing into the border or into itself, and tries to survive long enough to grow. The game also includes a score system, lives, visual feedback, and buzzer music.
+Worm is a compact arcade game built for the display and controls on the Ak Kit. The player moves a worm around the screen, eats apples, avoids crashing into itself, and tries to survive long enough to grow as much as possible. The game also includes a score system, visual feedback, and buzzer music.
 
 The important part of this project is not only the gameplay itself, but how the gameplay is split into small tasks:
 
@@ -47,8 +69,8 @@ The important part of this project is not only the gameplay itself, but how the 
 - One task owns score handling.
 - One task handles collision and eating logic.
 - One task manages borders.
-- One task manages lives.
 - One task coordinates the main game screen.
+- One task manages lives. (Optional)
 
 That structure makes the firmware easier to reason about and is a good reference if you are studying cooperative embedded state machines.
 
@@ -69,7 +91,7 @@ That structure makes the firmware easier to reason about and is a good reference
 The firmware targets the AK Embedded Base Kit hardware stack:
 
 - STM32L151 MCU.
-- 1.54" OLED display.
+- 1.54" OLED display (V3) or 1.3" OLED display (V2)
 - 3 push buttons.
 - Buzzer for sound effects and looping music.
 - Additional interfaces on the board such as RS485, Qwiic, and Grove, which are part of the larger platform even when not used directly by the worm game.
@@ -80,7 +102,7 @@ The firmware targets the AK Embedded Base Kit hardware stack:
 - `0x08002000` - Boot/Application shared data region.
 - `0x08003000` - Application firmware.
 
-The application is linked to start at `0x08003000` so it matches the boot layout and the shared flash map used by the kit.
+The application is linked to start at `0x08003000` so it matches the boot layout and the shared flash map used by the Ak Kit.
 
 ## Game Flow
 
@@ -95,6 +117,55 @@ The game is organized as a screen-driven application:
 7. The player can move to the score chart screen or back out to the menu.
 
 The worm screen itself is also responsible for starting and stopping the background music loop, so the audio state always matches the visible game state.
+
+## Game design
+
+The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
+
+### Startup Screen
+
+![Startup 1](resources/image/worm_startup_screen_anim.gif)
+
+The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
+
+### Menu Screen
+
+![Menu 1](resources/image/worm_menu_screen_anim.gif)
+
+The menu screen is the central hub. Menu entries are arranged vertically and can be navigated with Up/Down; Mode enters or confirms. Visual highlights and simple icons make it easy to pick modes (Start Game, Settings, Charts). Menu animations are subtle to keep the UI responsive.
+
+### Worm Game (Playfield)
+
+![Worm Game](resources/image/worm_game_1.png)
+
+This is the core gameplay screen. The player controls the worm with Up/Down to change direction. Apples appear as targets; eating them grows the worm and increases score. The HUD is intentionally minimal: score, lives (if enabled), and a small status indicator for buzzer/music.
+
+### Game Over / Result
+
+![Game Over](resources/image/worm_over_1.png)
+
+When the player crashes the worm, an overlay appears with the final score and options to retry or return to the menu. A short buzzer melody and a crisp visual overlay emphasize the result while preserving the final playfield for reference.
+
+### Settings Screen
+
+![Settings 1](resources/image/worm_setting_screen_anim.gif)
+
+Settings let the player tune gameplay and audio quickly:
+
+- Worm speed: five discrete steps from slow to fast.
+- Apple count: change the number of active apples (1–8).
+- Music selection: choose from a set of looped tunes.
+- Buzzer: toggle sound on or off.
+
+Controls are mapped consistently so a short hold action loads presets while single presses adjust the selected value.
+
+---
+
+Design notes
+
+- Visual clarity: the renderer uses bold pixels and a clear glyph set so text and icons remain legible on the small OLED.
+- Modularity: each gameplay system (worm, apples, score, collisions) is owned by a separate task, making it easy to change pacing or rules without touching rendering code.
+- Accessibility: simple 3-button controls and presets let new players start quickly without digging through menus.
 
 ## Internal Game IDs and Tasks
 
@@ -198,7 +269,7 @@ In the worm screen:
 Build the application from the repository root:
 
 ```sh
-make -C application
+make all
 ```
 
 The generated artifacts are placed under `application/build_worm-game/`, including the `.axf` and converted `.bin`, `.out`, and `.elf` files.
@@ -217,6 +288,10 @@ Example:
 
 ```sh
 ak_flash /dev/ttyUSB0 ak-base-kit-stm32l151-application.bin 0x08003000
+
+or
+
+make flash
 ```
 
 ## Security Considerations
@@ -266,6 +341,6 @@ In practice, the safe assumption is that anyone who can flash the board or attac
 
 | Topic | Link |
 | ------ | ------ |
-| Blog & Tutorial | https://epcb.vn/blogs/ak-embedded-software |
-| Where to buy KIT? | https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu |
+| Blog & Tutorial | <https://epcb.vn/blogs/ak-embedded-software> |
+| Where to buy KIT? | <https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu> |
 | Schematic | [hardware/schematic/schematic-ak-embedded-base-kit-version-3.pdf](hardware/schematic/schematic-ak-embedded-base-kit-version-3.pdf) |

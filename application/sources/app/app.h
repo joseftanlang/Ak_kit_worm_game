@@ -108,10 +108,7 @@ enum {
 	AC_IF_DYNAMIC_MSG_IN,
 	AC_IF_DYNAMIC_MSG_OUT,
 };
-
-/*****************************************************************************/
-/* UART_IF task define
- */
+	/* define timer */
 /*****************************************************************************/
 /* timer signal */
 /* define signal */
@@ -130,11 +127,11 @@ enum {
 /*  LIFE task define
  */
 /*****************************************************************************/
-/* define timer */
-#define AC_DISPLAY_INITIAL_INTERVAL									(100)
-#define AC_DISPLAY_STARTUP_INTERVAL									(2000)
-#define AC_DISPLAY_LOGO_INTERVAL									(10000)
-#define AC_DISPLAY_SHOW_IDLE_BALL_MOVING_UPDATE_INTERAL				(150)
+#define AC_DISPLAY_INITIAL_INTERVAL						(100)
+#define AC_DISPLAY_STARTUP_INTERVAL						(6000)
+#define AC_DISPLAY_STARTUP_ANIM_TICK_INTERVAL				(120)
+#define AC_DISPLAY_LOGO_INTERVAL						(10000)
+#define AC_DISPLAY_SHOW_IDLE_BALL_MOVING_UPDATE_INTERAL		(150)
 #define AC_DISPLAY_SHOW_MERRY_CHRISTMAS_SNOW_MOVING_UPDATE_INTERAL	(150)
 #define AC_DISPLAY_SHOW_MERRY_CHRISTMAS_SLEEP_INTERVAL				(15000)
 #define AC_DISPLAY_SHOW_MODBUS_PULL_INTERVAL						(1500)
@@ -170,6 +167,7 @@ enum {
 
 	//show screen
 	AC_DISPLAY_SHOW_LOGO,
+	AC_DISPLAY_STARTUP_ANIM_TICK,
 	AC_DISPLAY_SHOW_IDLE,
 	AC_DISPLAY_SHOW_IDLE_BALL_MOVING_UPDATE,
 	AC_DISPLAY_WELCOME_TEXT_ANIM_TICK,
