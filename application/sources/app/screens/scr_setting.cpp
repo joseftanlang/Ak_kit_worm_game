@@ -2,9 +2,9 @@
 
 static uint8_t selected_item = 0; // 0 = speed, 1 = apples, 2 = song, 3 = buzzer
 static uint8_t setting_anim_tick = 0;
-static uint8_t setting_worm_speed = 1; /* 1..5 */
-static uint8_t setting_apple_count = 1; /* 1..8 */
-static uint8_t setting_song_index = 0; /* 0..4 */
+static uint8_t setting_worm_speed = 1;     /* 1..5 */
+static uint8_t setting_apple_count = 1;    /* 1..8 */
+static uint8_t setting_song_index = 0;     /* 0..4 */
 static uint8_t setting_buzzer_enabled = 0; /* default: BUZZER OFF */
 
 #define SETTING_ANIM_INTERVAL_MS (85)

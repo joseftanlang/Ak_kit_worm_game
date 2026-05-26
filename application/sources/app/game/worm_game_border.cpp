@@ -4,7 +4,9 @@
 
 worm_game_border_t game_border = {0};
 
-void border_settings(void) {
+// Initialize the game border settings and draw the border rectangle on the screen.
+void border_settings(void)
+{
 	game_border.x = BORDER_MARGIN;
 	game_border.y = BORDER_MARGIN;
 	game_border.width = SCR_WIDTH - (BORDER_MARGIN * 2);
@@ -13,7 +15,7 @@ void border_settings(void) {
 	view_render.drawRect(game_border.x, game_border.y, game_border.width, game_border.height, WHITE);
 }
 
-
-void game_border_handler(ak_msg_t* msg) {
+void game_border_handler(ak_msg_t *msg)
+{
 	(void)msg;
 }

@@ -4,7 +4,7 @@
 #include "app.h"
 #include "app_dbg.h"
 
-// This is the main game of the codes, where the worm will eat the apple until the worm is at max length (cover the entire the screen). 
+// This is the main game of the codes, where the worm will eat the apple until the worm is at max length (cover the entire the screen).
 // The worm have 3 lives to win the game
 // The apple will spawn
 // Make sure that there is cool animation.
@@ -13,6 +13,7 @@ static void view_scr_worm();
 
 static void view_scr_worm_overlay();
 
+// The Worm game design and visual and sound states are managed through a combination of functions and data structures defined in this file, which interact with the rendering system and game logic to create an engaging gameplay experience. The worm's movement, growth, collision detection, and game state transitions are handled through these functions, while the rendering functions draw the worm, apples, score, and game over/win screens based on the current state of the game.
 static void view_draw_worm();
 static void worm_music_start(void);
 static void worm_music_stop(void);
@@ -49,7 +50,8 @@ void worm_game_reset(void)
 
 void worm_game_finish(uint8_t won)
 {
-	if (worm_game_finished) {
+	if (worm_game_finished)
+	{
 		return;
 	}
 
@@ -61,6 +63,7 @@ void worm_game_finish(uint8_t won)
 	score_commit_current();
 }
 
+// worm_music_stop stops the background music for the worm game by removing the timer that loops the music and disabling the buzzer. It also sets the buzzer to silent mode if the buzzer is not enabled in the game settings.
 static void worm_music_stop(void)
 {
 	timer_remove_attr(AC_TASK_DISPLAY_ID, WORM_MUSIC_LOOP_TICK_SIG);
@@ -68,6 +71,7 @@ static void worm_music_stop(void)
 	BUZZER_Silent(scr_game_setting_is_buzzer_enabled() ? false : true);
 }
 
+// worm_music_start initializes and starts the background music for the worm game based on the user's settings. It retrieves the selected song and checks if the buzzer is enabled, then plays the sound and sets up a timer to loop the music at appropriate intervals.
 static void worm_music_start(void)
 {
 	buzzer_sound_t song = scr_game_setting_get_song();
@@ -111,7 +115,8 @@ void view_scr_worm()
 {
 	view_render.clear();
 
-	if (worm_game_finished) {
+	if (worm_game_finished)
+	{
 		view_scr_worm_overlay();
 		return;
 	}
@@ -156,9 +161,11 @@ void view_scr_worm()
 	int sc = (int)score_get();
 	snprintf(buf_score, sizeof(buf_score), "Score:%d", sc);
 	view_render.print(buf_score);
-
 }
 
+// view_scr_worm_overlay draws the game over or win screen overlay when the worm game has finished.
+// It displays a message indicating whether the player won or lost, shows the final score, and provides instructions for viewing the top scores.
+// The overlay is drawn on top of the existing game screen, creating a clear and visually distinct end state for the game.
 static void view_scr_worm_overlay()
 {
 	const char *title = worm_game_won ? "YOU WIN" : "GAME OVER";
@@ -183,15 +190,22 @@ static void view_scr_worm_overlay()
 
 static void view_draw_worm()
 {
+	// trail_length is the number of segments of the worm's trail that should be drawn, which is determined by the current length of the worm and the maximum allowed trail length. It ensures that only the valid segments of the worm's body are rendered on the screen.
 	uint16_t trail_length = (game_worm.length > WORM_MAX_TRAIL) ? WORM_MAX_TRAIL : game_worm.length;
+
+	// center_x and center_y represent the coordinates of the center of the worm's head, which is calculated based on the position of the head segment and the size of the worm. The eye_dx1, eye_dy1, eye_dx2, and eye_dy2 variables are used to determine the positions of the worm's eyes relative to its head, based on its current direction of movement. These variables are set in the switch statement that follows, which adjusts their values according to whether the worm is moving right, left, down, or up.
 	int16_t center_x;
 	int16_t center_y;
+
+	// eye_dx1, eye_dy1, eye_dx2, and eye_dy2 are used to calculate the positions of the worm's eyes based on its current direction. They determine how far from the center of the head the eyes should be drawn in both the x and y directions, allowing the eyes to be positioned correctly for each movement direction (right, left, down, up).
 	int16_t eye_dx1 = 0;
 	int16_t eye_dy1 = 0;
 	int16_t eye_dx2 = 0;
 	int16_t eye_dy2 = 0;
 
-	for (uint16_t i = trail_length; i > 1; i--) {
+	// The loop iterates through the segments of the worm's trail (starting from the second segment, since the head is drawn separately) and draws each segment as a filled rounded rectangle on the screen. The position of each segment is determined by the coordinates stored in the worm's trail array, and the size of each segment is based on the defined movement step. This loop effectively renders the body of the worm on the screen, with each segment following the previous one to create a continuous trail.
+	for (uint16_t i = trail_length; i > 1; i--)
+	{
 		const worm_game_point_t *segment = &game_worm.trail[i - 1];
 		view_render.fillRoundRect((int16_t)segment->x,
 								  (int16_t)segment->y,
@@ -201,13 +215,17 @@ static void view_draw_worm()
 								  WHITE);
 	}
 
+	// Draw the head of the worm as a filled circle with a slightly larger radius to create a rounded appearance. The center of the head is calculated based on the position of the first segment in the trail (the head) and the movement step, which determines how far the center is from the top-left corner of the head segment. This creates a visually distinct head for the worm, differentiating it from the body segments.
 	center_x = (int16_t)game_worm.trail[0].x + (WORM_MOVE_STEP / 2);
 	center_y = (int16_t)game_worm.trail[0].y + (WORM_MOVE_STEP / 2);
 
+	// The head is drawn as two filled circles to create a layered effect, with the outer circle slightly larger than the inner circle. This gives the head a more rounded and visually appealing appearance, making it stand out from the body segments. The eyes are then drawn as pixels on top of the head, positioned based on the current direction of movement to give the worm a sense of orientation.
 	view_render.fillCircle(center_x, center_y, (WORM_MOVE_STEP / 2) + 1, WHITE);
 	view_render.fillCircle(center_x, center_y, WORM_MOVE_STEP / 2, WHITE);
 
-	switch (worm_get_direction()) {
+	// The switch statement sets the eye_dx1, eye_dy1, eye_dx2, and eye_dy2 variables based on the current direction of the worm. These variables determine the relative positions of the worm's eyes on its head, allowing them to be drawn in the correct location for each movement direction (right, left, down, up). This adds a visual cue to indicate the direction the worm is facing, enhancing the overall appearance of the game.
+	switch (worm_get_direction())
+	{
 	case WORM_DIR_RIGHT:
 		eye_dx1 = 1;
 		eye_dy1 = -1;
@@ -252,7 +270,8 @@ void game_gamer_handler(ak_msg_t *msg)
 		break;
 
 	case AC_WORM_TICK:
-		if (worm_game_finished) {
+		if (worm_game_finished)
+		{
 			worm_game_anim_tick++;
 			view_render_screen(&scr_worm);
 			break;
@@ -260,7 +279,7 @@ void game_gamer_handler(ak_msg_t *msg)
 
 		task_post_pure_msg(GAME_WORM_ID, AC_WORM_TICK);
 		view_render_screen(&scr_worm);
-	break;
+		break;
 
 	default:
 		break;
@@ -305,19 +324,24 @@ void scr_worm_handle(ak_msg_t *msg)
 		break;
 	}
 
-	if (msg->sig == 12) { /* AC_DISPLAY_BUTON_UP_PRESSED */
+	if (msg->sig == 12)
+	{ /* AC_DISPLAY_BUTON_UP_PRESSED */
 		task_post_pure_msg(GAME_WORM_ID, AC_WORM_SET_DIR_UP);
 	}
-    else if (msg->sig == 13) { /* AC_DISPLAY_BUTON_DOWN_PRESSED */
+	else if (msg->sig == 13)
+	{ /* AC_DISPLAY_BUTON_DOWN_PRESSED */
 		task_post_pure_msg(GAME_WORM_ID, AC_WORM_SET_DIR_DOWN);
 	}
-	else if (msg->sig == 11) { /* AC_DISPLAY_BUTON_MODE_PRESSED */
+	else if (msg->sig == 11)
+	{ /* AC_DISPLAY_BUTON_MODE_PRESSED */
 		timer_remove_attr(GAME_GAMER_ID, AC_WORM_TICK);
 		worm_music_stop();
-		if (worm_game_finished) {
+		if (worm_game_finished)
+		{
 			SCREEN_TRAN(scr_charts_handle, &scr_charts);
 		}
-		else {
+		else
+		{
 			SCREEN_BACK();
 		}
 	}

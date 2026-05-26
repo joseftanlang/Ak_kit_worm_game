@@ -15,8 +15,10 @@ SOC_FLASH_BYTES = 131072 # 128KB
 SOC_SRAM_BYTES = 16384	 # 16KB
 FLASH_BASE_ADDR_VAL = 0x08000000
 
+DEV_DEF = /dev/ttyUSB0
+
 # Name of build target ex: ak-base-kit-stm32l151-application.bin
-NAME_MODULE = ak-base-kit-stm32l151-application
+NAME_MODULE = worm_game
 PROJECT = $(NAME_MODULE)
 
 GCC_PATH		= /home/josef/Downloads/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10
@@ -164,6 +166,9 @@ TASK_OPTION +=	$(TASK_MBMASTER_OPTION)
 #Ver 2.1 (Oled 1.3" driver SH1106)
 #Ver 3.0 (Oled 1.54" driver SSD1309)
 
+
+# Note: Only enable one of the OLED driver compile option, that is used to control which OLED driver is compiled into firmware, and that need sync with declare in interrupt vector table.
+# D is for define and U is for undefine, to choose the thing you are using use "D" and the one you are not using use "U", for example, if you are using SSD1309 OLED, then set -DSSD1309_DRIVER_EN and -USH1106_DRIVER_EN, if you are using SH1106 OLED, then set -DSH1106_DRIVER_EN and -USSD1309_DRIVER_EN.
 HARDWARE_OPTION += \
 		-USSD1309_DRIVER_EN	\
 		-DSH1106_DRIVER_EN
@@ -278,11 +283,12 @@ endif
 
 .PHONY: com
 com:
-ifdef dev
-	minicom -D $(dev) -b 115200
-else
-	$(Print) "Example: make com dev=/dev/ttyUSB0"
-endif
+# ifdef dev
+	echo "Open console with device: $(dev)"
+	minicom -D $(DEV_DEF) -b 115200
+# else
+# 	$(Print) "Example: make com dev=/dev/ttyUSB0"
+# endif
 
 .PHONY: debug
 debug: all

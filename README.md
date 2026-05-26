@@ -126,6 +126,7 @@ The game UI is structured into a few clear screens that guide the player from po
 
 ![Startup 1](resources/image/worm_startup_screen_anim.gif)
 
+
 The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
 
 ### Menu Screen
