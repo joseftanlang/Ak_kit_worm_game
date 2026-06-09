@@ -1,12 +1,19 @@
 # AK Worm Game for AK Embedded Base Kit
+<div align="center">
+  <a href="https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu">
+    <img src="hardware/images/ak-foundation-logo.png" width="240"/>
+  </a>
+</div>
 
-[<img src="hardware/images/ak-foundation-logo.png" width="240"/>](https://github.com/the-ak-foundation)
 
 This repository contains the firmware for the worm game that runs on the AK Embedded Base Kit with STM32L151. The project is a hands-on example of event-driven embedded programming: the screen, buttons, buzzer, timers, EEPROM, and task scheduler work together to present a complete game loop rather than a single demo screen.
 
 The board is designed for embedded learning and prototyping. It combines a 1.54" OLED display, 3 push buttons, a buzzer, RS485, Qwiic, and Grove connectivity so you can study interaction, timing, persistence, and modular firmware architecture on real hardware.
-
-[<img src="hardware/images/ak-embedded-base-kit-version-3.jpg" width="480"/>](https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu)
+<div align="center">
+  <a href="https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu">
+    <img src="hardware/images/ak-embedded-base-kit-version-3.jpg" width="480"/>
+  </a>
+</div>
 
 ## Quick Start
 
@@ -47,10 +54,6 @@ Use this table to jump to major sections in this README.
 - [Settings](#settings)
 - [Controls](#controls)
 - [Build](#build)
-- [Development (Build & Flash)](#development-build--flash)
-- [Contributing](#contributing)
-- [License](#license)
-- [Support & Resources](#support--resources)
 
 ## How To Read This Project
 
@@ -123,33 +126,39 @@ The worm screen itself is also responsible for starting and stopping the backgro
 The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
 
 ### Startup Screen
+<div align="center">
+  <img src="resources/image/worm_startup_screen_anim.gif" alt="Startup 1" width="512" height="256" />
+</div>
 
-![Startup 1](resources/image/worm_startup_screen_anim.gif)
 
 
 The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
 
 ### Menu Screen
-
-![Menu 1](resources/image/worm_menu_screen_anim.gif)
+<div align="center">
+  <img src="resources/image/worm_menu_screen_anim.gif" alt="Menu 1" width="512" height="256" />
+</div>
 
 The menu screen is the central hub. Menu entries are arranged vertically and can be navigated with Up/Down; Mode enters or confirms. Visual highlights and simple icons make it easy to pick modes (Start Game, Settings, Charts). Menu animations are subtle to keep the UI responsive.
 
 ### Worm Game (Playfield)
-
-![Worm Game](resources/image/worm_game_1.png)
+<div align="center">
+  <img src="resources/image/worm_game_1.png" alt="Worm Game" width="512" height="256" />
+</div>
 
 This is the core gameplay screen. The player controls the worm with Up/Down to change direction. Apples appear as targets; eating them grows the worm and increases score. The HUD is intentionally minimal: score, lives (if enabled), and a small status indicator for buzzer/music.
 
 ### Game Over / Result
-
-![Game Over](resources/image/worm_over_1.png)
+<div align="center">
+  <img src="resources/image/worm_over_1.png" alt="Game Over" width="512" height="256" />
+</div>
 
 When the player crashes the worm, an overlay appears with the final score and options to retry or return to the menu. A short buzzer melody and a crisp visual overlay emphasize the result while preserving the final playfield for reference.
 
 ### Settings Screen
-
-![Settings 1](resources/image/worm_setting_screen_anim.gif)
+<div align="center">
+  <img src="resources/image/worm_setting_screen_anim.gif" alt="Settings 1" width="512" height="256" />
+</div>
 
 Settings let the player tune gameplay and audio quickly:
 
@@ -294,44 +303,6 @@ or
 
 make flash
 ```
-
-## Security Considerations
-
-This is an embedded game firmware, not a security-hardened product. The most important security facts are:
-
-- The system assumes physical access to the board.
-- There is no cryptographic secure boot or signed firmware verification in this project.
-- Debug and console-style tasks may expose maintenance behavior when enabled in the build.
-- EEPROM-stored scores and settings are validated for structure and range, but they are not protected against deliberate tampering.
-- If you want a tighter build, disable unused tasks and interfaces in the Makefile and keep only the modules you actually need.
-
-In practice, the safe assumption is that anyone who can flash the board or attach to its debug interfaces can control the firmware. Treat that as normal for a development kit.
-
-### Developer Security
-
-- Keep debug and console features enabled only when you need them for local development.
-- Treat EEPROM values as untrusted input and always validate ranges before use.
-- Keep optional tasks and interfaces compiled in only while they are actively required.
-- Use the current task split to limit the amount of code each module exposes.
-
-### Deployment Security
-
-- Assume physical access is enough to bypass most protections on a development kit.
-- Do not rely on firmware secrecy, because the project does not provide secure boot or signed images.
-- Remove unused tasks and interfaces from the Makefile before a custom release.
-- Keep the final firmware image minimal so there are fewer exposed behaviors.
-- Treat saved scores and settings as convenience data, not security-sensitive data.
-
-### Risk Summary
-
-| Risk | Impact | Mitigation |
-| ------ | ------ | ------ |
-| No secure boot | Modified firmware can run if the board is re-flashed | Control physical access and use a trusted flashing flow |
-| Debug exposure | Internal behavior may be visible in dev builds | Disable debug and console features when not needed |
-| EEPROM tampering | Saved scores or settings can be changed | Validate ranges and treat saved data as non-sensitive |
-| Optional task surface | Extra interfaces increase complexity | Remove unused tasks before release |
-
-## Repository Layout
 
 - `application/` - firmware application sources and build system.
 - `boot/` - bootloader-related files.
