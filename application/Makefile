@@ -21,8 +21,8 @@ DEV_DEF = /dev/ttyUSB0
 NAME_MODULE = worm_game
 PROJECT = $(NAME_MODULE)
 
-GCC_PATH		= /home/josef/Downloads/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10
-PROGRAMER_PATH		= /home/josef/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
+GCC_PATH		= ${HOME}/tools/gcc-arm-none-eabi-10.3-2021.10
+PROGRAMER_PATH		= ${HOME}/tools/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
 OPENOCD_CFG_PATH	= /usr/local/share/openocd/scripts/board/stm32ldiscovery.cfg
 
 # App start address, that need sync with declare in linker file and interrupt vector table.
@@ -72,7 +72,6 @@ include sources/ak/Makefile.mk
 include sources/app/Makefile.mk
 include sources/common/Makefile.mk
 include sources/driver/Makefile.mk
-include sources/libraries/Makefile.mk
 include sources/sys/Makefile.mk
 include sources/networks/Makefile.mk
 include sources/platform/stm32l/Makefile.mk
@@ -80,13 +79,17 @@ include sources/platform/stm32l/Makefile.mk
 OBJECTS_DIR = build_$(NAME_MODULE)
 TARGET = $(OBJECTS_DIR)/$(NAME_MODULE).axf
 
-OURCES		+=
+SOURCES		+=
 SOURCES_	 = $(shell find $(SOURCES) -type f -printf "%f\n")
 OBJECTS		+= $(patsubst %.c, $(OBJECTS_DIR)/%.o, $(SOURCES_))
 
 SOURCES_CPP	+=
 SOURCES_CPP_	 = $(shell find $(SOURCES_CPP) -type f -printf "%f\n")
 OBJECTS		+= $(patsubst %.cpp, $(OBJECTS_DIR)/%.o, $(SOURCES_CPP_))
+
+SOURCES_ASM	+=
+SOURCES_ASM_	 = $(shell find $(SOURCES_ASM) -type f -printf "%f\n")
+OBJECTS		+= $(patsubst %.s, $(OBJECTS_DIR)/%.o, $(SOURCES_ASM_))
 
 LIBC		= $(GCC_PATH)/arm-none-eabi/lib/thumb/v7-m/nofp/libc.a
 LIBM		= $(GCC_PATH)/arm-none-eabi/lib/thumb/v7-m/nofp/libm.a
@@ -140,7 +143,7 @@ define MEMORY_INFO_COLLECT
 endef
 
 define MEMORY_INFO_PRINT
-	echo "MCU name: $(SOC_NAME)"; \
+	echo "SOC name: $(SOC_NAME)"; \
 	printf -- " - Boot/Reserved Flash : 0x%08X - 0x%08X (%d bytes)\n" $(FLASH_BASE_ADDR_VAL) $$BOOT_END_ADDR $$BOOT_RESERVED_BYTES; \
 	printf -- " - Application Flash   : 0x%08X - 0x%08X (%d bytes)\n" $(APP_START_ADDR_VAL) $$SOC_FLASH_END_ADDR $$APP_FLASH_BYTES; \
 	printf -- " - Flash info          : %d bytes / %d bytes\n" $$FLASH_USED $$APP_FLASH_BYTES; \
@@ -155,22 +158,14 @@ CPU = -mthumb -march=armv7-m
 FPU = -mfloat-abi=soft
 
 # Interface option
-IF_OPTION +=	$(IF_LINK_OPTION)		\
-		$(IF_NETWORK_NRF24_OPTION)	\
-
-# App option
-TASK_OPTION +=	$(TASK_ZIGBEE_OPTION)
-TASK_OPTION +=	$(TASK_MBMASTER_OPTION)
+IF_OPTION +=	$(IF_LINK_OPTION)
 
 # Hardware option
 #Ver 2.1 (Oled 1.3" driver SH1106)
 #Ver 3.0 (Oled 1.54" driver SSD1309)
 
-
-# Note: Only enable one of the OLED driver compile option, that is used to control which OLED driver is compiled into firmware, and that need sync with declare in interrupt vector table.
-# D is for define and U is for undefine, to choose the thing you are using use "D" and the one you are not using use "U", for example, if you are using SSD1309 OLED, then set -DSSD1309_DRIVER_EN and -USH1106_DRIVER_EN, if you are using SH1106 OLED, then set -DSH1106_DRIVER_EN and -USSD1309_DRIVER_EN.
 HARDWARE_OPTION += \
-		-USSD1309_DRIVER_EN	\
+		-USSD1309_DRIVER_EN \
 		-DSH1106_DRIVER_EN
 
 # Console log compile option
@@ -193,7 +188,6 @@ GENERAL_FLAGS +=			\
 		$(APP_ADDR_OPTION)	\
 		$(USB_OPTION)		\
 		$(IF_OPTION)		\
-		$(TASK_OPTION)		\
 		$(HARDWARE_OPTION)  \
 		-DUSE_STDPERIPH_DRIVER	\
 		-DSTM32L1XX_MD		\
@@ -231,7 +225,8 @@ LDFLAGS	=	-Map=$(OBJECTS_DIR)/$(PROJECT).map	\
 		$(LIB_PATH)	\
 		$(LIBC) $(LIBM) $(LIBSTDCPP_NANO) $(LIBGCC) $(LIBGCOV) $(LIBFPU) $(LIBRDPMON)
 
-all: create $(TARGET) info
+all: create $(TARGET)
+	@$(MAKE) --no-print-directory info 
 
 create:
 	$(Print) CREATE $(OBJECTS_DIR) folder
@@ -283,12 +278,11 @@ endif
 
 .PHONY: com
 com:
-# ifdef dev
-	echo "Open console with device: $(dev)"
-	minicom -D $(DEV_DEF) -b 115200
-# else
-# 	$(Print) "Example: make com dev=/dev/ttyUSB0"
-# endif
+ifdef dev
+	minicom -D $(dev) -b 115200
+else
+	$(Print) "Example: make com dev=/dev/ttyUSB0"
+endif
 
 .PHONY: debug
 debug: all

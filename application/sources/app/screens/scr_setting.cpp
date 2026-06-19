@@ -30,21 +30,19 @@ typedef struct
 } setting_persist_t;
 
 static const uint16_t setting_worm_tick_intervals_ms[SETTING_WORM_SPEED_MAX] = {
-    300,
-    240,
-    180,
-    130,
-    90,
+    300, 240, 180, 130, 90,
 };
+
 static const char *setting_speed_values[] = {"1", "2", "3", "4", "5"};
 static const char *setting_apple_values[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 static const char *setting_song_values[] = {"WELCOME", "MARIO", "HIGH", "LOW", "XMAS"};
+
 static const buzzer_sound_t setting_song_sounds[] = {
     BUZZER_SOUND_WELCOME,
     BUZZER_SOUND_SUPER_MARIO,
     BUZZER_SOUND_HIGHSCORE,
     BUZZER_SOUND_LOWSCORE,
-    BUZZER_SOUND_MERRY_CHRISTMAS,
+    BUZZER_SOUND_JINGLE_BELLS,
 };
 
 static uint8_t setting_loaded = 0;
@@ -64,7 +62,11 @@ static setting_star_t setting_stars[] = {
     {92, 10, 1},
     {111, 22, 2},
 };
-static const uint8_t setting_star_count = sizeof(setting_stars) / sizeof(setting_stars[0]);
+
+static const uint8_t setting_star_count =
+    sizeof(setting_stars) / sizeof(setting_stars[0]);
+
+/* ---------------- internal functions ---------------- */
 
 static void view_scr_game_setting();
 static void setting_tick();
@@ -74,10 +76,13 @@ static void setting_draw_row(int index, int y, const char *label, const char *va
 static void setting_toggle_selected_item();
 static void setting_load_if_needed(void);
 static void setting_save(void);
+
 static const char *setting_get_speed_value();
 static const char *setting_get_apple_value();
 static const char *setting_get_song_value();
 static const char *setting_get_buzzer_value();
+
+/* ---------------- screen object ---------------- */
 
 view_dynamic_t dyn_view_item_game_setting = {
     {.item_type = ITEM_TYPE_DYNAMIC},
@@ -90,24 +95,27 @@ view_screen_t scr_game_setting = {
     .focus_item = 0,
 };
 
+/* ---------------- persistence ---------------- */
+
 static void setting_load_if_needed(void)
 {
     setting_persist_t stored = {0};
 
-    if (setting_loaded)
-    {
-        return;
-    }
+    if (setting_loaded) return;
 
-    if (eeprom_read(EEPROM_WORM_SETTING_MAGIC_ADDR, (uint8_t *)&stored, sizeof(stored)) == EEPROM_DRIVER_OK &&
+    if (eeprom_read(EEPROM_WORM_SETTING_MAGIC_ADDR,
+                    (uint8_t *)&stored,
+                    sizeof(stored)) == EEPROM_DRIVER_OK &&
         stored.magic == EEPROM_WORM_SETTING_MAGIC)
     {
-        if (stored.worm_speed >= SETTING_WORM_SPEED_MIN && stored.worm_speed <= SETTING_WORM_SPEED_MAX)
+        if (stored.worm_speed >= SETTING_WORM_SPEED_MIN &&
+            stored.worm_speed <= SETTING_WORM_SPEED_MAX)
         {
             setting_worm_speed = stored.worm_speed;
         }
 
-        if (stored.apple_count >= SETTING_APPLE_COUNT_MIN && stored.apple_count <= SETTING_APPLE_COUNT_MAX)
+        if (stored.apple_count >= SETTING_APPLE_COUNT_MIN &&
+            stored.apple_count <= SETTING_APPLE_COUNT_MAX)
         {
             setting_apple_count = stored.apple_count;
         }
@@ -135,8 +143,12 @@ static void setting_save(void)
     stored.song_index = setting_song_index;
     stored.buzzer_enabled = setting_buzzer_enabled;
 
-    eeprom_write(EEPROM_WORM_SETTING_MAGIC_ADDR, (uint8_t *)&stored, sizeof(stored));
+    eeprom_write(EEPROM_WORM_SETTING_MAGIC_ADDR,
+                 (uint8_t *)&stored,
+                 sizeof(stored));
 }
+
+/* ---------------- getters ---------------- */
 
 uint16_t scr_game_setting_get_worm_tick_interval_ms(void)
 {
@@ -144,14 +156,8 @@ uint16_t scr_game_setting_get_worm_tick_interval_ms(void)
 
     uint8_t speed = setting_worm_speed;
 
-    if (speed < SETTING_WORM_SPEED_MIN)
-    {
-        speed = SETTING_WORM_SPEED_MIN;
-    }
-    else if (speed > SETTING_WORM_SPEED_MAX)
-    {
-        speed = SETTING_WORM_SPEED_MAX;
-    }
+    if (speed < SETTING_WORM_SPEED_MIN) speed = SETTING_WORM_SPEED_MIN;
+    if (speed > SETTING_WORM_SPEED_MAX) speed = SETTING_WORM_SPEED_MAX;
 
     return setting_worm_tick_intervals_ms[speed - 1];
 }
@@ -161,14 +167,10 @@ uint8_t scr_game_setting_get_apple_count(void)
     setting_load_if_needed();
 
     if (setting_apple_count < SETTING_APPLE_COUNT_MIN)
-    {
         return SETTING_APPLE_COUNT_MIN;
-    }
 
     if (setting_apple_count > SETTING_APPLE_COUNT_MAX)
-    {
         return SETTING_APPLE_COUNT_MAX;
-    }
 
     return setting_apple_count;
 }
@@ -177,105 +179,84 @@ buzzer_sound_t scr_game_setting_get_song(void)
 {
     setting_load_if_needed();
 
-    uint8_t song_index = setting_song_index;
+    uint8_t idx = setting_song_index;
+    if (idx >= SETTING_SONG_COUNT) idx = 0;
 
-    if (song_index >= SETTING_SONG_COUNT)
-    {
-        song_index = 0;
-    }
-
-    return setting_song_sounds[song_index];
+    return setting_song_sounds[idx];
 }
 
 uint8_t scr_game_setting_is_buzzer_enabled(void)
 {
     setting_load_if_needed();
-
     return setting_buzzer_enabled;
 }
+
+/* ---------------- UI helpers ---------------- */
 
 static const char *setting_get_speed_value()
 {
     setting_load_if_needed();
-
-    if (setting_worm_speed < SETTING_WORM_SPEED_MIN || setting_worm_speed > SETTING_WORM_SPEED_MAX)
-    {
-        return setting_speed_values[0];
-    }
-
     return setting_speed_values[setting_worm_speed - 1];
 }
 
 static const char *setting_get_apple_value()
 {
-    setting_load_if_needed();
-
-    uint8_t apple_count = scr_game_setting_get_apple_count();
-    return setting_apple_values[apple_count - 1];
+    return setting_apple_values[scr_game_setting_get_apple_count() - 1];
 }
 
 static const char *setting_get_song_value()
 {
     setting_load_if_needed();
 
-    uint8_t song_index = setting_song_index;
+    uint8_t idx = setting_song_index;
+    if (idx >= SETTING_SONG_COUNT) idx = 0;
 
-    if (song_index >= SETTING_SONG_COUNT)
-    {
-        song_index = 0;
-    }
-
-    return setting_song_values[song_index];
+    return setting_song_values[idx];
 }
 
 static const char *setting_get_buzzer_value()
 {
     setting_load_if_needed();
-
     return setting_buzzer_enabled ? "ON" : "OFF";
 }
+
+/* ---------------- logic ---------------- */
 
 static void setting_toggle_selected_item()
 {
     switch (selected_item)
     {
     case 0:
-        if (setting_worm_speed < SETTING_WORM_SPEED_MAX)
-        {
-            setting_worm_speed++;
-        }
-        else
-        {
-            setting_worm_speed = SETTING_WORM_SPEED_MIN;
-        }
+        setting_worm_speed =
+            (setting_worm_speed < SETTING_WORM_SPEED_MAX)
+                ? setting_worm_speed + 1
+                : SETTING_WORM_SPEED_MIN;
         setting_save();
         break;
 
     case 1:
-        if (setting_apple_count < SETTING_APPLE_COUNT_MAX)
-        {
-            setting_apple_count++;
-        }
-        else
-        {
-            setting_apple_count = SETTING_APPLE_COUNT_MIN;
-        }
+        setting_apple_count =
+            (setting_apple_count < SETTING_APPLE_COUNT_MAX)
+                ? setting_apple_count + 1
+                : SETTING_APPLE_COUNT_MIN;
         setting_save();
         break;
 
     case 2:
-        setting_song_index = (uint8_t)((setting_song_index + 1) % SETTING_SONG_COUNT);
+        setting_song_index = (setting_song_index + 1) % SETTING_SONG_COUNT;
         setting_save();
         break;
 
     case 3:
     default:
-        setting_buzzer_enabled = setting_buzzer_enabled ? 0 : 1;
-        BUZZER_Silent(setting_buzzer_enabled ? false : true);
+        setting_buzzer_enabled = !setting_buzzer_enabled;
+        BUZZER_Sleep(setting_buzzer_enabled ? false : true);
         setting_save();
         break;
     }
 }
+
+/* ---------------- animation ---------------- */
 
 static void setting_tick()
 {
@@ -286,7 +267,8 @@ static void setting_tick()
         if (setting_stars[i].x <= setting_stars[i].speed)
         {
             setting_stars[i].x = 127;
-            setting_stars[i].y = (uint8_t)((setting_anim_tick + (i * 13)) % 64);
+            setting_stars[i].y =
+                (uint8_t)((setting_anim_tick + (i * 13)) % 64);
         }
         else
         {
@@ -295,13 +277,18 @@ static void setting_tick()
     }
 }
 
+/* ---------------- drawing ---------------- */
+
 static void setting_draw_background()
 {
     for (uint8_t i = 0; i < setting_star_count; i++)
     {
-        if (((setting_anim_tick + i) & 0x01) == 0 || setting_stars[i].speed > 1)
+        if (((setting_anim_tick + i) & 0x01) == 0 ||
+            setting_stars[i].speed > 1)
         {
-            view_render.drawPixel(setting_stars[i].x, setting_stars[i].y, WHITE);
+            view_render.drawPixel(setting_stars[i].x,
+                                  setting_stars[i].y,
+                                  WHITE);
         }
     }
 
@@ -317,29 +304,33 @@ static void setting_draw_title()
     view_render.print("SETTINGS");
 }
 
-static void setting_draw_row(int index, int y, const char *label, const char *value)
+static void setting_draw_row(int index, int y,
+                             const char *label,
+                             const char *value)
 {
     if (index == selected_item)
     {
-        view_render.fillRoundRect(4, y, 120, SETTING_ROW_HEIGHT, 2, WHITE);
+        view_render.fillRoundRect(4, y, 120,
+                                  SETTING_ROW_HEIGHT, 2, WHITE);
         view_render.setTextColor(BLACK);
         view_render.setCursor(8, y + 2);
         view_render.print("> ");
-        view_render.print(label);
-        view_render.setCursor(82, y + 2);
-        view_render.print(value);
     }
     else
     {
-        view_render.drawRoundRect(4, y, 120, SETTING_ROW_HEIGHT, 2, WHITE);
+        view_render.drawRoundRect(4, y, 120,
+                                  SETTING_ROW_HEIGHT, 2, WHITE);
         view_render.setTextColor(WHITE);
         view_render.setCursor(8, y + 2);
         view_render.print("  ");
-        view_render.print(label);
-        view_render.setCursor(82, y + 2);
-        view_render.print(value);
     }
+
+    view_render.print(label);
+    view_render.setCursor(82, y + 2);
+    view_render.print(value);
 }
+
+/* ---------------- screen render ---------------- */
 
 void view_scr_game_setting()
 {
@@ -348,11 +339,20 @@ void view_scr_game_setting()
     setting_draw_background();
     setting_draw_title();
 
-    setting_draw_row(0, SETTING_ROW_TOP_Y, "SPEED", setting_get_speed_value());
-    setting_draw_row(1, SETTING_ROW_TOP_Y + SETTING_ROW_STEP_Y, "APPLE", setting_get_apple_value());
-    setting_draw_row(2, SETTING_ROW_TOP_Y + (SETTING_ROW_STEP_Y * 2), "SONG", setting_get_song_value());
-    setting_draw_row(3, SETTING_ROW_TOP_Y + (SETTING_ROW_STEP_Y * 3), "BUZZER", setting_get_buzzer_value());
+    setting_draw_row(0, SETTING_ROW_TOP_Y,
+                     "SPEED", setting_get_speed_value());
+
+    setting_draw_row(1, SETTING_ROW_TOP_Y + SETTING_ROW_STEP_Y,
+                     "APPLE", setting_get_apple_value());
+
+    setting_draw_row(2, SETTING_ROW_TOP_Y + (SETTING_ROW_STEP_Y * 2),
+                     "SONG", setting_get_song_value());
+
+    setting_draw_row(3, SETTING_ROW_TOP_Y + (SETTING_ROW_STEP_Y * 3),
+                     "BUZZER", setting_get_buzzer_value());
 }
+
+/* ---------------- handler ---------------- */
 
 void scr_game_setting_handle(ak_msg_t *msg)
 {
@@ -362,12 +362,17 @@ void scr_game_setting_handle(ak_msg_t *msg)
         setting_load_if_needed();
         selected_item = 0;
         setting_anim_tick = 0;
-        timer_set(AC_TASK_DISPLAY_ID, SETTING_ANIM_TICK_SIG, SETTING_ANIM_INTERVAL_MS, TIMER_PERIODIC);
+        g_controller_mode = 1;
+        timer_set(AC_TASK_DISPLAY_ID,
+                  SETTING_ANIM_TICK_SIG,
+                  SETTING_ANIM_INTERVAL_MS,
+                  TIMER_PERIODIC);
         view_scr_game_setting();
         break;
 
     case SCREEN_EXIT:
-        timer_remove_attr(AC_TASK_DISPLAY_ID, SETTING_ANIM_TICK_SIG);
+        timer_remove_attr(AC_TASK_DISPLAY_ID,
+                          SETTING_ANIM_TICK_SIG);
         break;
 
     case SETTING_ANIM_TICK_SIG:
@@ -375,69 +380,33 @@ void scr_game_setting_handle(ak_msg_t *msg)
         view_scr_game_setting();
         break;
 
-    case 12: /* AC_DISPLAY_BUTON_UP_PRESSED */
-    {
-        if (selected_item > 0)
-        {
-            selected_item--;
-        }
-        else
-        {
-            selected_item = SETTING_ROW_COUNT - 1;
-        }
-        view_scr_game_setting();
+    case 12:
+        selected_item = (selected_item == 0)
+                            ? SETTING_ROW_COUNT - 1
+                            : selected_item - 1;
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
-    }
-    break;
+        break;
 
-    case 13: /* AC_DISPLAY_BUTON_DOWN_PRESSED */
-    {
+    case 13:
         selected_item = (selected_item + 1) % SETTING_ROW_COUNT;
-        view_scr_game_setting();
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
-    }
-    break;
+        break;
 
-    case 11: /* AC_DISPLAY_BUTON_MODE_PRESSED */
-    {
+    case 11:
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
         setting_toggle_selected_item();
-        view_scr_game_setting();
-    }
-    break;
+        break;
 
-    case 19: /* AC_DISPLAY_BUTON_MODE_HOLD */
-    {
+    case 19:
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
-        timer_remove_attr(AC_TASK_DISPLAY_ID, SETTING_ANIM_TICK_SIG);
+        timer_remove_attr(AC_TASK_DISPLAY_ID,
+                          SETTING_ANIM_TICK_SIG);
         SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
-    }
-    break;
-
-    case 17: /* AC_DISPLAY_BUTON_UP_HOLD */
-    {
-        setting_worm_speed = SETTING_WORM_SPEED_MAX;
-        setting_apple_count = SETTING_APPLE_COUNT_MAX;
-        setting_song_index = 1;
-        setting_buzzer_enabled = 1;
-        BUZZER_Silent(false);
-        setting_save();
-        view_scr_game_setting();
-    }
-    break;
-    case 18: /* AC_DISPLAY_BUTON_DOWN_HOLD */
-    {
-        setting_worm_speed = SETTING_WORM_SPEED_MIN;
-        setting_apple_count = SETTING_APPLE_COUNT_MIN;
-        setting_song_index = SETTING_SONG_COUNT - 1;
-        setting_buzzer_enabled = 0;
-        BUZZER_Silent(true);
-        setting_save();
-        view_scr_game_setting();
-    }
-    break;
+        break;
 
     default:
         break;
     }
+
+    view_scr_game_setting();
 }

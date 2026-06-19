@@ -6,7 +6,7 @@
 volatile       uint32_t          _beep_duration;
 volatile       bool              _tones_playing;
 volatile const Tone_TypeDef     *_tones;
-volatile       bool              _buzzer_silent = BUZZER_SILENT_ON;
+volatile       bool              _buzzer_sleep;
 
 GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -27,15 +27,10 @@ static const buzzer_music_t buzzer_music_table[] = {
 	{BUZZER_SOUND_GOODBYE,			tones_goodbye},
 	{BUZZER_SOUND_HIGHSCORE,		tones_highscore},
 	{BUZZER_SOUND_LOWSCORE,			tones_lowscore},
-	{BUZZER_SOUND_SUPER_MARIO,		tones_supper_mario_bros},
-	{BUZZER_SOUND_MERRY_CHRISTMAS,	tones_merry_christmas},
-	{BUZZER_SOUND_TONE_1,           sTone1},
-	{BUZZER_SOUND_TONE_2,           sTone2},
-	{BUZZER_SOUND_TONE_3,           sTone3},
-	{BUZZER_SOUND_TONE_4,           sTone4},
-	{BUZZER_SOUND_TONE_5,           sTone5},
-	{BUZZER_SOUND_TONE_6,           sTone6},
-	{BUZZER_SOUND_TONE_7,           sTone7},
+	{BUZZER_SOUND_SUPER_MARIO,		tones_smb},
+	{BUZZER_SOUND_JINGLE_BELLS,		tones_jingle_bells},
+	{BUZZER_SOUND_MARIO_KART,		tones_mario_kart},
+	{BUZZER_SOUND_PIRATES_CARIBBEAN,	tones_pirates},
 	{BUZZER_SOUND_MAX,				(const Tone_TypeDef*)0}
 };
 
@@ -173,36 +168,31 @@ void BUZZER_Disable(void) {
 // input:
 //   tones - pointer to tones array
 static void BUZZER_PlayTones(const Tone_TypeDef * tones) {
-	if (_buzzer_silent != BUZZER_SILENT_ON) {
-		_tones = tones;
-		_tones_playing = true;
-		BUZZER_Enable(_tones->frequency,_tones->duration);
+	if (_buzzer_sleep == 0) {
+		if (_tones == NULL) {
+			_tones = tones;
+			_tones_playing = true;
+			BUZZER_Enable(_tones->frequency,_tones->duration);
+		}
 	}
 }
 
 void BUZZER_PlaySound(buzzer_sound_t sound) {
 	const Tone_TypeDef* tones = buzzer_get_music(sound);
+
 	if (tones != NULL) {
 		BUZZER_PlayTones(tones);
 	}
 }
 
-uint32_t BUZZER_GetSoundDurationMs(buzzer_sound_t sound) {
-	const Tone_TypeDef* tones = buzzer_get_music(sound);
-	uint32_t duration_ms = 0;
-
-	if (tones == NULL) {
-		return 0;
+// Off Buzzer --- Buu
+void BUZZER_Sleep(bool sleep) {
+#define ON	(1)
+#define OFF	(0)
+	if (sleep == OFF) {
+		_buzzer_sleep = OFF;
 	}
-
-	while (!(tones->frequency == 0 && tones->duration == 0)) {
-		duration_ms += (uint32_t)tones->duration * 10U;
-		tones++;
+	else {
+		_buzzer_sleep = ON;
 	}
-
-	return duration_ms;
-}
-
-void BUZZER_Silent(bool isSilent) {
-	_buzzer_silent = isSilent ? BUZZER_SILENT_ON : BUZZER_SILENT_OFF;
 }

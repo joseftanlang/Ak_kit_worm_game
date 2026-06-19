@@ -272,6 +272,7 @@ void scr_charts_handle(ak_msg_t *msg)
 		chart_worm_x = CHART_WIDTH;
 		chart_anim_frame = 0;
 		chart_rank_index = 0;
+		g_controller_mode = 1;
 		timer_set(AC_TASK_DISPLAY_ID, AC_CHARTS_ANIM_TICK, CHART_ANIM_INTERVAL_MS, TIMER_PERIODIC);
 		view_render_screen(&scr_charts);
 		break;
@@ -287,7 +288,7 @@ void scr_charts_handle(ak_msg_t *msg)
 
 	case CHART_MODE_SIG:
 		timer_remove_attr(AC_TASK_DISPLAY_ID, AC_CHARTS_ANIM_TICK);
-		SCREEN_BACK();
+		SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
 		break;
 
 	default:

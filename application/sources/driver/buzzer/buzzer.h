@@ -10,16 +10,12 @@ extern "C"
 #include "io_cfg.h"
 #include "buzzer_music.h"
 
-#define BUZZER_SILENT_ON      (0U)
-#define BUZZER_SILENT_OFF     (1U)
-
 // Function prototypes
 void BUZZER_Init(void);
 void BUZZER_Enable(uint16_t freq, uint32_t duration);
 void BUZZER_Disable(void);
 void BUZZER_PlaySound(buzzer_sound_t sound);
-uint32_t BUZZER_GetSoundDurationMs(buzzer_sound_t sound);
-void BUZZER_Silent(bool isSilent);
+void BUZZER_Sleep(bool sleep);
 
 extern void buzzer_irq( void );
 

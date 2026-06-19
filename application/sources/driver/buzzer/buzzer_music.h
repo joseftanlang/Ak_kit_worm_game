@@ -27,14 +27,9 @@ typedef enum {
 	BUZZER_SOUND_HIGHSCORE,
 	BUZZER_SOUND_LOWSCORE,
 	BUZZER_SOUND_SUPER_MARIO,
-	BUZZER_SOUND_MERRY_CHRISTMAS,
-	BUZZER_SOUND_TONE_1,
-	BUZZER_SOUND_TONE_2,
-	BUZZER_SOUND_TONE_3,
-	BUZZER_SOUND_TONE_4,
-	BUZZER_SOUND_TONE_5,
-	BUZZER_SOUND_TONE_6,
-	BUZZER_SOUND_TONE_7,
+	BUZZER_SOUND_JINGLE_BELLS,
+	BUZZER_SOUND_MARIO_KART,
+	BUZZER_SOUND_PIRATES_CARIBBEAN,
 	BUZZER_SOUND_MAX
 } buzzer_sound_t;
 
@@ -49,15 +44,10 @@ extern const Tone_TypeDef tones_welcome[];
 extern const Tone_TypeDef tones_goodbye[];
 extern const Tone_TypeDef tones_highscore[];
 extern const Tone_TypeDef tones_lowscore[];
-extern const Tone_TypeDef tones_supper_mario_bros[];
-extern const Tone_TypeDef tones_merry_christmas[];
-extern const Tone_TypeDef sTone1[];
-extern const Tone_TypeDef sTone2[];
-extern const Tone_TypeDef sTone3[];
-extern const Tone_TypeDef sTone4[];
-extern const Tone_TypeDef sTone5[];
-extern const Tone_TypeDef sTone6[];
-extern const Tone_TypeDef sTone7[];
+extern const Tone_TypeDef tones_smb[];
+extern const Tone_TypeDef tones_jingle_bells[];
+extern const Tone_TypeDef tones_mario_kart[];
+extern const Tone_TypeDef tones_pirates[];
 
 #ifdef __cplusplus
 }

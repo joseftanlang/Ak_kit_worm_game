@@ -86,6 +86,7 @@ void scr_startup_handle(ak_msg_t *msg)
 		view_render.initialize();
 		view_render_display_on();
 		view_render_screen(&scr_startup);
+		g_controller_mode = 1;
 		/* start periodic animation ticks and a one-shot to finish */
 		timer_set(AC_TASK_DISPLAY_ID, AC_DISPLAY_STARTUP_ANIM_TICK, AC_DISPLAY_STARTUP_ANIM_TICK_INTERVAL, TIMER_PERIODIC);
 		timer_set(AC_TASK_DISPLAY_ID, AC_DISPLAY_SHOW_LOGO, AC_DISPLAY_STARTUP_INTERVAL, TIMER_ONE_SHOT);

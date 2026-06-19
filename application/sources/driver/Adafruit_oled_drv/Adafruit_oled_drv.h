@@ -160,7 +160,6 @@ public:
 
 	const unsigned char* getFrameBuffer() const;
 	unsigned int getFrameBufferSize() const;
-
 protected:
 	//write one byte to the screen.
 	void writeByte(unsigned char  b);

@@ -20,7 +20,6 @@
 #include <math.h>
 #include <vector>
 
-#include "qrcode.h"
 #include "screens_bitmap.h"
 #include "scr_charts.h"
 #include "scr_menu.h"
@@ -30,10 +29,7 @@ extern view_dynamic_t dyn_view_idle;
 extern view_screen_t scr_idle;
 extern void scr_idle_handle(ak_msg_t* msg);
 
-// scr_qrcode
-extern view_dynamic_t dyn_view_qrcode;
-extern view_screen_t scr_qrcode;
-extern void scr_qrcode_handle(ak_msg_t* msg);
+
 
 // scr_startup
 extern view_dynamic_t dyn_view_startup;

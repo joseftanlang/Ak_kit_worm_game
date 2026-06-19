@@ -68,7 +68,7 @@ static void worm_music_stop(void)
 {
 	timer_remove_attr(AC_TASK_DISPLAY_ID, WORM_MUSIC_LOOP_TICK_SIG);
 	BUZZER_Disable();
-	BUZZER_Silent(scr_game_setting_is_buzzer_enabled() ? false : true);
+	BUZZER_Sleep(scr_game_setting_is_buzzer_enabled() ? false : true);
 }
 
 // worm_music_start initializes and starts the background music for the worm game based on the user's settings. It retrieves the selected song and checks if the buzzer is enabled, then plays the sound and sets up a timer to loop the music at appropriate intervals.
@@ -81,20 +81,18 @@ static void worm_music_start(void)
 
 	if (!scr_game_setting_is_buzzer_enabled())
 	{
-		BUZZER_Silent(true);
+		BUZZER_Sleep(true);
 		return;
 	}
 
-	BUZZER_Silent(false);
+	BUZZER_Sleep(false);
 	BUZZER_PlaySound(song);
 
-	loop_interval_ms = BUZZER_GetSoundDurationMs(song) + WORM_MUSIC_LOOP_GAP_MS;
-	if (loop_interval_ms == WORM_MUSIC_LOOP_GAP_MS)
-	{
-		loop_interval_ms = 1000;
-	}
-
-	timer_set(AC_TASK_DISPLAY_ID, WORM_MUSIC_LOOP_TICK_SIG, loop_interval_ms, TIMER_PERIODIC);
+	loop_interval_ms = 1000; // safe default loop delay
+	timer_set(AC_TASK_DISPLAY_ID,
+			  WORM_MUSIC_LOOP_TICK_SIG,
+			  loop_interval_ms,
+			  TIMER_PERIODIC);
 }
 
 view_dynamic_t dyn_view_item_worm = {
@@ -298,6 +296,7 @@ void scr_worm_handle(ak_msg_t *msg)
 		worm_init();
 		lives_init();
 		apple_init();
+		g_controller_mode = 1;
 		worm_music_start();
 		view_render_screen(&scr_worm);
 		timer_set(GAME_GAMER_ID, AC_WORM_TICK, scr_game_setting_get_worm_tick_interval_ms(), TIMER_PERIODIC);
@@ -340,9 +339,6 @@ void scr_worm_handle(ak_msg_t *msg)
 		{
 			SCREEN_TRAN(scr_charts_handle, &scr_charts);
 		}
-		else
-		{
-			SCREEN_BACK();
-		}
+		SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
 	}
 }

@@ -98,6 +98,7 @@ SECTIONS {
 		*(.bss*)
 		*(COMMON)
 		_ebss = .;
+		end = .; 
 	} > SRAM
 
 	.heap : {
@@ -108,12 +109,12 @@ SECTIONS {
 	} > SRAM
 
 	/* non clear RAM */
-	.non_clear_ram (NOLOAD) : {
+	.non_clear_ram : {
 		_non_clear_ram = .;
 		KEEP (*(.non_clear_ram))
 		KEEP (*(.non_clear_ram*))
 		_enon_clear_ram = .;
-	} > SRAM  
+	} > SRAM
 
 	/* end of SRAM */
 	.end_ram : {

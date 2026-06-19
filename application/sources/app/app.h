@@ -222,6 +222,9 @@ extern const app_info_t app_info;
 extern void* app_get_boot_share_data();
 extern int  main_app();
 
+//keyboard
+extern volatile bool g_controller_mode;
+
 #ifdef __cplusplus
 }
 #endif

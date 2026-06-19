@@ -23,13 +23,13 @@ const task_t app_task_table[] = {
 	/*************************************************************************/
 	/* Worm Game TASK */
 	/*************************************************************************/
-	{GAME_APPLE_ID			,	TASK_PRI_LEVEL_5	,	game_apple_handler		},
-	{GAME_WORM_ID			,	TASK_PRI_LEVEL_5	,	game_worm_handler		},
-	{GAME_SCORE_ID			,	TASK_PRI_LEVEL_5	,	game_score_handler		},
-	{GAME_EATING_ID			,	TASK_PRI_LEVEL_5	,	game_eating_handler		},
-	{GAME_BORDER_ID			,	TASK_PRI_LEVEL_5	,	game_border_handler		},
-	{GAME_LIVES_ID			,	TASK_PRI_LEVEL_5	,	game_lives_handler		},
-	{GAME_GAMER_ID			,	TASK_PRI_LEVEL_5	,	game_gamer_handler		},
+	{GAME_APPLE_ID			,	TASK_PRI_LEVEL_3	,	game_apple_handler		},
+	{GAME_WORM_ID			,	TASK_PRI_LEVEL_3	,	game_worm_handler		},
+	{GAME_SCORE_ID			,	TASK_PRI_LEVEL_3	,	game_score_handler		},
+	{GAME_EATING_ID			,	TASK_PRI_LEVEL_3	,	game_eating_handler		},
+	{GAME_BORDER_ID			,	TASK_PRI_LEVEL_3	,	game_border_handler		},
+	{GAME_LIVES_ID			,	TASK_PRI_LEVEL_3	,	game_lives_handler		},
+	{GAME_GAMER_ID			,	TASK_PRI_LEVEL_3	,	game_gamer_handler		},
 
 	#if defined(TASK_ZIGBEE_EN)
 	{AC_TASK_ZIGBEE_ID			,	TASK_PRI_LEVEL_4	,	task_zigbee			},

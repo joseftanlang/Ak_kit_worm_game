@@ -1,10 +1,16 @@
 # AK Worm Game for AK Embedded Base Kit
-<div align="center">
-  <a href="https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu">
-    <img src="hardware/images/ak-foundation-logo.png" width="240"/>
-  </a>
-</div>
 
+<div align="center">
+
+  <a href="https://github.com/user-attachments/assets/ab6bf85c-af58-42b9-b7f9-4c1330c70b53">
+    <video
+      src="https://github.com/user-attachments/assets/ab6bf85c-af58-42b9-b7f9-4c1330c70b53"
+      controls
+    ></video>
+
+  </a>
+
+</div>
 
 This repository contains the firmware for the worm game that runs on the AK Embedded Base Kit with STM32L151. The project is a hands-on example of event-driven embedded programming: the screen, buttons, buzzer, timers, EEPROM, and task scheduler work together to present a complete game loop rather than a single demo screen.
 
@@ -126,15 +132,15 @@ The worm screen itself is also responsible for starting and stopping the backgro
 The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
 
 ### Startup Screen
+
 <div align="center">
   <img src="resources/image/worm_startup_screen_anim.gif" alt="Startup 1" width="512" height="256" />
 </div>
 
-
-
 The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
 
 ### Menu Screen
+
 <div align="center">
   <img src="resources/image/worm_menu_screen_anim.gif" alt="Menu 1" width="512" height="256" />
 </div>
@@ -142,6 +148,7 @@ The startup screen shows the board and firmware identity, provides a brief boot 
 The menu screen is the central hub. Menu entries are arranged vertically and can be navigated with Up/Down; Mode enters or confirms. Visual highlights and simple icons make it easy to pick modes (Start Game, Settings, Charts). Menu animations are subtle to keep the UI responsive.
 
 ### Worm Game (Playfield)
+
 <div align="center">
   <img src="resources/image/worm_game_1.png" alt="Worm Game" width="512" height="256" />
 </div>
@@ -149,6 +156,7 @@ The menu screen is the central hub. Menu entries are arranged vertically and can
 This is the core gameplay screen. The player controls the worm with Up/Down to change direction. Apples appear as targets; eating them grows the worm and increases score. The HUD is intentionally minimal: score, lives (if enabled), and a small status indicator for buzzer/music.
 
 ### Game Over / Result
+
 <div align="center">
   <img src="resources/image/worm_over_1.png" alt="Game Over" width="512" height="256" />
 </div>
@@ -156,6 +164,7 @@ This is the core gameplay screen. The player controls the worm with Up/Down to c
 When the player crashes the worm, an overlay appears with the final score and options to retry or return to the menu. A short buzzer melody and a crisp visual overlay emphasize the result while preserving the final playfield for reference.
 
 ### Settings Screen
+
 <div align="center">
   <img src="resources/image/worm_setting_screen_anim.gif" alt="Settings 1" width="512" height="256" />
 </div>

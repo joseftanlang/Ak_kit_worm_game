@@ -113,7 +113,7 @@ int ball::total;
 static void scr_idle_return_screen()
 {
 	timer_remove_attr(AC_TASK_DISPLAY_ID, AC_DISPLAY_SHOW_IDLE_BALL_MOVING_UPDATE);
-	SCREEN_BACK();
+	SCREEN_TRAN(scr_welcome_handle, &scr_welcome);
 }
 
 void view_scr_idle()
@@ -131,6 +131,7 @@ void scr_idle_handle(ak_msg_t *msg)
 	case SCREEN_ENTRY:
 	{
 		APP_DBG_SIG("SCREEN_ENTRY\n");
+		g_controller_mode = 1;
 		if (v_idle_ball.empty())
 		{
 			ball new_ball;
