@@ -1,5 +1,5 @@
-#ifndef __OBJ_APPLE_H__
-#define __OBJ_APPLE_H__
+#ifndef __WORM_GAME_APPLE_H__
+#define __WORM_GAME_APPLE_H__
 
 //includes
 #include "fsm.h"
@@ -20,13 +20,23 @@
 
 #include <math.h>
 #include <vector>
+#include <stdlib.h>
 
 #include "screens_bitmap.h"
+#include "worm_game_border.h"
+#include "scr_worm.h"
+#include "scr_setting.h"
+
 
 //codes
 #define MAX_APPLES      (8)
 #define APPLE_WIDTH     (10)
 #define APPLE_HEIGHT    (10)
+#define BORDER_MARGIN 1
+#define APPLE_LIFE_SECONDS 3
+#define APPLE_RESPAWN_SECONDS 2
+#define APPLE_RANDOM_TRIES 32
+#define APPLE_BORDER_PADDING 1
 
 enum {
 	AC_APPLE_INIT = AK_USER_DEFINE_SIG,
@@ -49,4 +59,4 @@ extern worm_game_apple_t apples_no[MAX_APPLES];
 void counting_apples(void);
 void apple_init(void);
 
-#endif //__OBJ_APPLE_H__
+#endif //__WORM_GAME_APPLE_H__

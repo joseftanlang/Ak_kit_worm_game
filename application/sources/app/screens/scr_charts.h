@@ -23,6 +23,22 @@
 #include <vector>
 
 #include "screens_bitmap.h"
+#include "worm_game_score.h"
+#include <string.h>
+
+#define CHART_WIDTH (128)
+#define CHART_HEIGHT (64)
+#define CHART_ANIM_INTERVAL_MS (70)
+#define CHART_WORM_STEP_PX (3)
+#define CHART_WORM_SEGMENTS (7)
+#define CHART_WORM_SEGMENT_GAP (5)
+#define CHART_WORM_Y (24)
+#define CHART_WORM_HEAD_RADIUS (3)
+#define AC_CHARTS_ANIM_TICK (AK_USER_DEFINE_SIG + 180)
+#define CHART_MODE_SIG (11)
+#define CHART_STAR_COUNT (10)
+
+
 
 //codes
 

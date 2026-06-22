@@ -1,5 +1,5 @@
-#ifndef __OBJ_EATING_H__
-#define __OBJ_EATING_H__
+#ifndef __WORM_GAME_EATING_H__
+#define __WORM_GAME_EATING_H__
 
 //includes
 #include "fsm.h"
@@ -28,9 +28,9 @@
 #define EATING_EFFECT_MAX_RADIUS    (7) //it needs to be slightly bigger than the worm head.
 
 enum {
-	AC_EATING_INIT = AK_USER_DEFINE_SIG,
-	AC_EATING_START,
-	AC_EATING_TICK,
+	AC_WORM_EATING_INIT = AK_USER_DEFINE_SIG,
+	AC_WORM_EATING_START,
+	AC_WORM_EATING_TICK,
 };
 
 typedef struct {
@@ -39,16 +39,16 @@ typedef struct {
     uint32_t y;
     uint32_t radius;
     uint8_t eating_image;
-} workm_game_eating_effect_t;
+} worm_game_eating_effect_t;
 
-extern workm_game_eating_effect_t game_eating;
+extern worm_game_eating_effect_t worm_eating;
 
 void eating_effect_init(void);
 void eating_effect_start(uint32_t x, uint32_t y);
 void eating_effect_tick(void);
 void eating_effect_stop(void);
 
-extern void game_eating_handler(ak_msg_t* msg);
+extern void worm_game_eating_handler(ak_msg_t* msg);
 
 
-#endif //__OBJ_EATING_H__
+#endif //__WORM_GAME_EATING_H__

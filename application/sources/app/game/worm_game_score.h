@@ -1,5 +1,5 @@
-#ifndef __OBJ_SCORE_H__
-#define __OBJ_SCORE_H__
+#ifndef __WORM_GAME_SCORE_H__
+#define __WORM_GAME_SCORE_H__
 
 //includes
 #include "fsm.h"
@@ -15,6 +15,8 @@
 #include "task_list.h"
 #include "task_display.h"
 #include "view_render.h"
+#include "app_eeprom.h"
+#include "eeprom.h"
 
 #include "buzzer.h"
 
@@ -41,9 +43,9 @@ uint32_t score_get(void);
 void score_commit_current(void);
 uint32_t score_top_get(uint8_t index);
 
-void game_score_handler(ak_msg_t* msg);
+void worm_game_score_handler(ak_msg_t* msg);
 
-/* message signals for `game_score_handler` */
+/* message signals for `worm_game_score_handler` */
 enum {
     AC_SCORE_INIT = AK_USER_DEFINE_SIG + 10,
     AC_SCORE_INC,
@@ -52,4 +54,4 @@ enum {
     AC_SCORE_TOP_GET,
 };
 
-#endif //__OBJ_SCORE_H__
+#endif //__WORM_GAME_SCORE_H__

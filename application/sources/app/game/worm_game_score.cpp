@@ -1,6 +1,4 @@
 #include "worm_game_score.h"
-#include "app_eeprom.h"
-#include "eeprom.h"
 
 static worm_game_score_display_t game_score = {0};
 static uint32_t game_top_scores[3] = {0};
@@ -169,7 +167,7 @@ uint32_t score_top_get(uint8_t index)
 	return game_top_scores[index];
 }
 
-void game_score_handler(ak_msg_t *msg)
+void worm_game_score_handler(ak_msg_t *msg)
 {
 	switch (msg->sig)
 	{

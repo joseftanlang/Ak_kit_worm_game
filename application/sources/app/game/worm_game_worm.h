@@ -1,5 +1,5 @@
-#ifndef __OBJ_WORM_H__
-#define __OBJ_WORM_H__
+#ifndef __WORM_GAME_WORM_H__
+#define __WORM_GAME_WORM_H__
 
 //includes
 #include "fsm.h"
@@ -22,6 +22,9 @@
 #include <vector>
 
 #include "screens_bitmap.h"
+#include "worm_game_border.h"
+#include "worm_game_lives.h"
+#include "scr_worm.h"
 
 //codes
 #define WORM_START_POSITION_X  (50)
@@ -60,7 +63,7 @@ typedef enum {
     WORM_DIR_UP,
 } worm_game_dir_t;
 
-extern worm_game_t game_worm;
+extern worm_game_t worm_game;
 
 /* Object-only (movement and input handled by screen code) */
 void worm_init(void);
@@ -69,7 +72,7 @@ worm_game_dir_t worm_get_direction(void);
 uint8_t worm_advance(void);
 void worm_grow(void);
 
-/* message signals for `game_worm_handler` */
+/* message signals for `worm_game_worm_handler` */
 enum {
     AC_WORM_INIT = AK_USER_DEFINE_SIG,
     AC_WORM_TICK,
@@ -81,4 +84,4 @@ enum {
 };
 
 
-#endif //__OBJ_WORM_H__
+#endif //__WORM_GAME_WORM_H__

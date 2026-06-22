@@ -28,13 +28,13 @@ enum {
 	AC_TASK_DISPLAY_ID,
 
 	/* WORM GAME TASKS */
-	GAME_APPLE_ID,
-	GAME_WORM_ID,
-	GAME_SCORE_ID,
-	GAME_EATING_ID,
-	GAME_BORDER_ID,
-	GAME_LIVES_ID,
-	GAME_GAMER_ID,
+	WORM_GAME_APPLE_ID,
+	WORM_GAME_WORM_ID,
+	WORM_GAME_SCORE_ID,
+	WORM_GAME_EATING_ID,
+	WORM_GAME_BORDER_ID,
+	WORM_GAME_LIVES_ID,
+	WORM_GAME_GAMER_ID,
 
 #if defined(TASK_ZIGBEE_EN)
 	AC_TASK_ZIGBEE_ID,
@@ -89,13 +89,13 @@ extern void task_display(ak_msg_t*);
 extern void task_zigbee(ak_msg_t*);
 
 /* WORM GAME TASKS */
-extern void game_apple_handler(ak_msg_t*);
-extern void game_worm_handler(ak_msg_t*);
-extern void game_score_handler(ak_msg_t*);
-extern void game_eating_handler(ak_msg_t*);
-extern void game_border_handler(ak_msg_t*);
-extern void game_lives_handler(ak_msg_t*);
-extern void game_gamer_handler(ak_msg_t*);
+extern void worm_game_apple_handler(ak_msg_t*);
+extern void worm_game_worm_handler(ak_msg_t*);
+extern void worm_game_score_handler(ak_msg_t*);
+extern void worm_game_eating_handler(ak_msg_t*);
+extern void worm_game_border_handler(ak_msg_t*);
+extern void worm_game_lives_handler(ak_msg_t*);
+extern void worm_worm_gamer_handler(ak_msg_t*);
 
 /* RF24 NETWORK TASK */
 extern void task_rf24_phy(ak_msg_t*);

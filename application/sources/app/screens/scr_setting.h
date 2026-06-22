@@ -31,4 +31,17 @@ extern uint8_t scr_game_setting_get_apple_count(void);
 extern buzzer_sound_t scr_game_setting_get_song(void);
 extern uint8_t scr_game_setting_is_buzzer_enabled(void);
 
+#define SETTING_ANIM_INTERVAL_MS (85)
+#define SETTING_ANIM_TICK_SIG (AK_USER_DEFINE_SIG + 183)
+#define SETTING_ROW_COUNT (4)
+#define SETTING_ROW_TOP_Y (18)
+#define SETTING_ROW_STEP_Y (10)
+#define SETTING_ROW_HEIGHT (9)
+
+#define SETTING_WORM_SPEED_MIN (1)
+#define SETTING_WORM_SPEED_MAX (5)
+#define SETTING_APPLE_COUNT_MIN (1)
+#define SETTING_APPLE_COUNT_MAX (8)
+#define SETTING_SONG_COUNT (5)
+
 #endif // __SCR_GAME_SETTING_H__

@@ -1,5 +1,5 @@
-#ifndef __OBJ_LIVES_H__
-#define __OBJ_LIVES_H__
+#ifndef __WORM_GAME_LIVES_H__
+#define __WORM_GAME_LIVES_H__
 
 //includes
 #include "fsm.h"
@@ -28,10 +28,10 @@
 #define MIN_LIVES       (0)
 
 enum {
-    AC_LIVES_INIT = AK_USER_DEFINE_SIG,
-    AC_LIVES_RESET,
-    AC_LIVES_INC,
-    AC_LIVES_DEC,
+    WORM_AC_LIVES_INIT = AK_USER_DEFINE_SIG,
+    WORM_AC_LIVES_RESET,
+    WORM_AC_LIVES_INC,
+    WORM_AC_LIVES_DEC,
 };
 
 typedef struct {
@@ -48,4 +48,4 @@ void lives_inc(void);
 void lives_dec(void);
 uint32_t lives_get(void);
 
-#endif //__OBJ_LIVES_H__
+#endif //__WORM_GAME_LIVES_H__

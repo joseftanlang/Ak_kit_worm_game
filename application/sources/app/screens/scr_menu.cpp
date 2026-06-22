@@ -1,6 +1,4 @@
 #include "scr_menu.h"
-#include "screens.h"
-#include "scr_setting.h"
 
 static const char *menu_items[] = {"Idle", "Worm", "Charts", "Settings"};
 static int menu_count = sizeof(menu_items) / sizeof(menu_items[0]);
@@ -136,7 +134,7 @@ static void view_scr_menu()
     }
 }
 
-void scr_menu_game_handle(ak_msg_t *msg)
+void scr_worm_menu_game_handle(ak_msg_t *msg)
 {
     switch (msg->sig)
     {

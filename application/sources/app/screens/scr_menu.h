@@ -19,7 +19,9 @@
 
 #include "app_eeprom.h"
 #include "screens_bitmap.h"
+#include "screens.h"
+#include "scr_setting.h"
 
-void scr_menu_game_handle(ak_msg_t* msg);
+void scr_worm_menu_game_handle(ak_msg_t* msg);
 
 #endif // __SCR_MENU_GAME_H__

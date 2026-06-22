@@ -2,20 +2,20 @@
 
 #define BORDER_MARGIN 1
 
-worm_game_border_t game_border = {0};
+worm_game_border_t worm_game_border = {0};
 
 // Initialize the game border settings and draw the border rectangle on the screen.
 void border_settings(void)
 {
-	game_border.x = BORDER_MARGIN;
-	game_border.y = BORDER_MARGIN;
-	game_border.width = SCR_WIDTH - (BORDER_MARGIN * 2);
-	game_border.height = SCR_HEIGHT - (BORDER_MARGIN * 2);
+	worm_game_border.x = BORDER_MARGIN;
+	worm_game_border.y = BORDER_MARGIN;
+	worm_game_border.width = SCR_WIDTH - (BORDER_MARGIN * 2);
+	worm_game_border.height = SCR_HEIGHT - (BORDER_MARGIN * 2);
 
-	view_render.drawRect(game_border.x, game_border.y, game_border.width, game_border.height, WHITE);
+	view_render.drawRect(worm_game_border.x, worm_game_border.y, worm_game_border.width, worm_game_border.height, WHITE);
 }
 
-void game_border_handler(ak_msg_t *msg)
+void worm_game_border_handler(ak_msg_t *msg)
 {
 	(void)msg;
 }

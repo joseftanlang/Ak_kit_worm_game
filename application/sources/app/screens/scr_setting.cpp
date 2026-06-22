@@ -7,19 +7,6 @@ static uint8_t setting_apple_count = 1;    /* 1..8 */
 static uint8_t setting_song_index = 0;     /* 0..4 */
 static uint8_t setting_buzzer_enabled = 0; /* default: BUZZER OFF */
 
-#define SETTING_ANIM_INTERVAL_MS (85)
-#define SETTING_ANIM_TICK_SIG (AK_USER_DEFINE_SIG + 183)
-#define SETTING_ROW_COUNT (4)
-#define SETTING_ROW_TOP_Y (18)
-#define SETTING_ROW_STEP_Y (10)
-#define SETTING_ROW_HEIGHT (9)
-
-#define SETTING_WORM_SPEED_MIN (1)
-#define SETTING_WORM_SPEED_MAX (5)
-#define SETTING_APPLE_COUNT_MIN (1)
-#define SETTING_APPLE_COUNT_MAX (8)
-#define SETTING_SONG_COUNT (5)
-
 typedef struct
 {
     uint32_t magic;
@@ -191,7 +178,6 @@ uint8_t scr_game_setting_is_buzzer_enabled(void)
     return setting_buzzer_enabled;
 }
 
-/* ---------------- UI helpers ---------------- */
 
 static const char *setting_get_speed_value()
 {
@@ -220,7 +206,6 @@ static const char *setting_get_buzzer_value()
     return setting_buzzer_enabled ? "ON" : "OFF";
 }
 
-/* ---------------- logic ---------------- */
 
 static void setting_toggle_selected_item()
 {
@@ -256,7 +241,6 @@ static void setting_toggle_selected_item()
     }
 }
 
-/* ---------------- animation ---------------- */
 
 static void setting_tick()
 {
@@ -277,7 +261,6 @@ static void setting_tick()
     }
 }
 
-/* ---------------- drawing ---------------- */
 
 static void setting_draw_background()
 {
@@ -330,7 +313,6 @@ static void setting_draw_row(int index, int y,
     view_render.print(value);
 }
 
-/* ---------------- screen render ---------------- */
 
 void view_scr_game_setting()
 {
@@ -352,7 +334,6 @@ void view_scr_game_setting()
                      "BUZZER", setting_get_buzzer_value());
 }
 
-/* ---------------- handler ---------------- */
 
 void scr_game_setting_handle(ak_msg_t *msg)
 {
@@ -401,7 +382,7 @@ void scr_game_setting_handle(ak_msg_t *msg)
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
         timer_remove_attr(AC_TASK_DISPLAY_ID,
                           SETTING_ANIM_TICK_SIG);
-        SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
+        SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
         break;
 
     default:

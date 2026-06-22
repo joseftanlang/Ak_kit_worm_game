@@ -245,10 +245,10 @@ void task_polling_console()
                 break;
 
             case 'a': case 'A':
-            case 'd': case 'D':
-            case ' ':
-                task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_PRESSED);
-                break;
+            // case 'd': case 'D':
+            // case ' ':
+            //     task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_PRESSED);
+            //     break;
 
             case 'n': case 'N':
                 task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_MODE_PRESSED);

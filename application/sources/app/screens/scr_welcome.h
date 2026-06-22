@@ -3,4 +3,8 @@
 
 #include "screens.h"
 
+#define WELCOME_TEXT_LINE_1_LEN (8)
+#define WELCOME_TEXT_LINE_2_LEN (5)
+#define WELCOME_TEXT_TOTAL_LEN (WELCOME_TEXT_LINE_1_LEN + WELCOME_TEXT_LINE_2_LEN)
+
 #endif //__SCR_WELCOME_H__

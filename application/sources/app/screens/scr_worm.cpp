@@ -1,31 +1,16 @@
 #include "scr_worm.h"
-#include "scr_charts.h"
-#include "scr_setting.h"
-#include "app.h"
-#include "app_dbg.h"
-
 // This is the main game of the codes, where the worm will eat the apple until the worm is at max length (cover the entire the screen).
 // The worm have 3 lives to win the game
 // The apple will spawn
 // Make sure that there is cool animation.
 
 static void view_scr_worm();
-
 static void view_scr_worm_overlay();
 
 // The Worm game design and visual and sound states are managed through a combination of functions and data structures defined in this file, which interact with the rendering system and game logic to create an engaging gameplay experience. The worm's movement, growth, collision detection, and game state transitions are handled through these functions, while the rendering functions draw the worm, apples, score, and game over/win screens based on the current state of the game.
 static void view_draw_worm();
 static void worm_music_start(void);
 static void worm_music_stop(void);
-
-#define HEART_SIZE (7)
-#define HEART_SPACING (1)
-#define WORM_GAME_TEXT_X (20)
-#define WORM_GAME_TEXT_Y (18)
-#define WORM_GAME_HELP_Y (44)
-#define WORM_GAME_SPARKLES (8)
-#define WORM_MUSIC_LOOP_TICK_SIG (AK_USER_DEFINE_SIG + 184)
-#define WORM_MUSIC_LOOP_GAP_MS (150)
 
 static uint8_t worm_game_finished = 0;
 static uint8_t worm_game_won = 0;
@@ -59,7 +44,7 @@ void worm_game_finish(uint8_t won)
 	worm_game_won = won ? 1 : 0;
 	worm_game_anim_tick = 0;
 	worm_music_stop();
-	timer_remove_attr(GAME_APPLE_ID, AC_APPLE_TICK);
+	timer_remove_attr(WORM_GAME_APPLE_ID, AC_APPLE_TICK);
 	score_commit_current();
 }
 
@@ -119,10 +104,8 @@ void view_scr_worm()
 		return;
 	}
 
-	/* draw border (and set game_border) */
 	border_settings();
 
-	/* draw apples using bitmap_apple */
 	for (uint8_t i = 0; i < MAX_APPLES; i++)
 	{
 		if (apples_no[i].is_active)
@@ -136,7 +119,6 @@ void view_scr_worm()
 		}
 	}
 
-	/* draw worm */
 	view_draw_worm();
 
 	// /* draw lives at top right */ --> use only if needed to.
@@ -151,7 +133,6 @@ void view_scr_worm()
 	// 						   WHITE);
 	// }
 
-	/* draw score at top-left */
 	view_render.setTextSize(1);
 	view_render.setTextColor(WHITE);
 	view_render.setCursor(4, 2);
@@ -189,7 +170,7 @@ static void view_scr_worm_overlay()
 static void view_draw_worm()
 {
 	// trail_length is the number of segments of the worm's trail that should be drawn, which is determined by the current length of the worm and the maximum allowed trail length. It ensures that only the valid segments of the worm's body are rendered on the screen.
-	uint16_t trail_length = (game_worm.length > WORM_MAX_TRAIL) ? WORM_MAX_TRAIL : game_worm.length;
+	uint16_t trail_length = (worm_game.length > WORM_MAX_TRAIL) ? WORM_MAX_TRAIL : worm_game.length;
 
 	// center_x and center_y represent the coordinates of the center of the worm's head, which is calculated based on the position of the head segment and the size of the worm. The eye_dx1, eye_dy1, eye_dx2, and eye_dy2 variables are used to determine the positions of the worm's eyes relative to its head, based on its current direction of movement. These variables are set in the switch statement that follows, which adjusts their values according to whether the worm is moving right, left, down, or up.
 	int16_t center_x;
@@ -204,7 +185,7 @@ static void view_draw_worm()
 	// The loop iterates through the segments of the worm's trail (starting from the second segment, since the head is drawn separately) and draws each segment as a filled rounded rectangle on the screen. The position of each segment is determined by the coordinates stored in the worm's trail array, and the size of each segment is based on the defined movement step. This loop effectively renders the body of the worm on the screen, with each segment following the previous one to create a continuous trail.
 	for (uint16_t i = trail_length; i > 1; i--)
 	{
-		const worm_game_point_t *segment = &game_worm.trail[i - 1];
+		const worm_game_point_t *segment = &worm_game.trail[i - 1];
 		view_render.fillRoundRect((int16_t)segment->x,
 								  (int16_t)segment->y,
 								  WORM_MOVE_STEP,
@@ -214,8 +195,8 @@ static void view_draw_worm()
 	}
 
 	// Draw the head of the worm as a filled circle with a slightly larger radius to create a rounded appearance. The center of the head is calculated based on the position of the first segment in the trail (the head) and the movement step, which determines how far the center is from the top-left corner of the head segment. This creates a visually distinct head for the worm, differentiating it from the body segments.
-	center_x = (int16_t)game_worm.trail[0].x + (WORM_MOVE_STEP / 2);
-	center_y = (int16_t)game_worm.trail[0].y + (WORM_MOVE_STEP / 2);
+	center_x = (int16_t)worm_game.trail[0].x + (WORM_MOVE_STEP / 2);
+	center_y = (int16_t)worm_game.trail[0].y + (WORM_MOVE_STEP / 2);
 
 	// The head is drawn as two filled circles to create a layered effect, with the outer circle slightly larger than the inner circle. This gives the head a more rounded and visually appealing appearance, making it stand out from the body segments. The eyes are then drawn as pixels on top of the head, positioned based on the current direction of movement to give the worm a sense of orientation.
 	view_render.fillCircle(center_x, center_y, (WORM_MOVE_STEP / 2) + 1, WHITE);
@@ -255,7 +236,7 @@ static void view_draw_worm()
 	view_render.drawPixel(center_x + eye_dx2, center_y + eye_dy2, 0);
 }
 
-void game_gamer_handler(ak_msg_t *msg)
+void worm_worm_gamer_handler(ak_msg_t *msg)
 {
 	switch (msg->sig)
 	{
@@ -275,7 +256,7 @@ void game_gamer_handler(ak_msg_t *msg)
 			break;
 		}
 
-		task_post_pure_msg(GAME_WORM_ID, AC_WORM_TICK);
+		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_TICK);
 		view_render_screen(&scr_worm);
 		break;
 
@@ -290,7 +271,7 @@ void scr_worm_handle(ak_msg_t *msg)
 	{
 	case SCREEN_ENTRY:
 	{
-		timer_remove_attr(GAME_GAMER_ID, AC_WORM_TICK);
+		timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
 		worm_game_reset();
 		score_init();
 		worm_init();
@@ -299,7 +280,7 @@ void scr_worm_handle(ak_msg_t *msg)
 		g_controller_mode = 1;
 		worm_music_start();
 		view_render_screen(&scr_worm);
-		timer_set(GAME_GAMER_ID, AC_WORM_TICK, scr_game_setting_get_worm_tick_interval_ms(), TIMER_PERIODIC);
+		timer_set(WORM_GAME_GAMER_ID, AC_WORM_TICK, scr_game_setting_get_worm_tick_interval_ms(), TIMER_PERIODIC);
 	}
 	break;
 
@@ -314,7 +295,7 @@ void scr_worm_handle(ak_msg_t *msg)
 
 	case SCREEN_EXIT:
 	{
-		timer_remove_attr(GAME_GAMER_ID, AC_WORM_TICK);
+		timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
 		worm_music_stop();
 	}
 	break;
@@ -325,20 +306,20 @@ void scr_worm_handle(ak_msg_t *msg)
 
 	if (msg->sig == 12)
 	{ /* AC_DISPLAY_BUTON_UP_PRESSED */
-		task_post_pure_msg(GAME_WORM_ID, AC_WORM_SET_DIR_UP);
+		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_UP);
 	}
 	else if (msg->sig == 13)
 	{ /* AC_DISPLAY_BUTON_DOWN_PRESSED */
-		task_post_pure_msg(GAME_WORM_ID, AC_WORM_SET_DIR_DOWN);
+		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_DOWN);
 	}
 	else if (msg->sig == 11)
 	{ /* AC_DISPLAY_BUTON_MODE_PRESSED */
-		timer_remove_attr(GAME_GAMER_ID, AC_WORM_TICK);
+		timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
 		worm_music_stop();
 		if (worm_game_finished)
 		{
 			SCREEN_TRAN(scr_charts_handle, &scr_charts);
 		}
-		SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
+		SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
 	}
 }

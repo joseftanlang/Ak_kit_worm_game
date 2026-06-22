@@ -1,5 +1,5 @@
-#ifndef __OBJ_BORDER_H__
-#define __OBJ_BORDER_H__
+#ifndef __WORM_GAME_BORDER_H__
+#define __WORM_GAME_BORDER_H__
 
 //includes
 #include "fsm.h"
@@ -34,8 +34,8 @@ typedef struct {
 //codes
 
 void border_settings(void);
-void game_border_handler(ak_msg_t* msg);
+void worm_game_border_handler(ak_msg_t* msg);
 
-extern worm_game_border_t game_border;
+extern worm_game_border_t worm_game_border;
 
-#endif //__OBJ_BORDER_H__
+#endif //__WORM_GAME_BORDER_H__

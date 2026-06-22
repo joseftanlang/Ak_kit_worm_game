@@ -37,23 +37,23 @@ uint32_t lives_get(void)
 	return game_lives.amount_lives;
 }
 
-void game_lives_handler(ak_msg_t *msg)
+void worm_game_lives_handler(ak_msg_t *msg)
 {
 	switch (msg->sig)
 	{
-	case AC_LIVES_INIT:
+	case WORM_AC_LIVES_INIT:
 		lives_init();
 		break;
 
-	case AC_LIVES_RESET:
+	case WORM_AC_LIVES_RESET:
 		lives_reset();
 		break;
 
-	case AC_LIVES_INC:
+	case WORM_AC_LIVES_INC:
 		lives_inc();
 		break;
 
-	case AC_LIVES_DEC:
+	case WORM_AC_LIVES_DEC:
 		lives_dec();
 		break;
 

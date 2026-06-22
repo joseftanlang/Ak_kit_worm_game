@@ -1,9 +1,5 @@
 #include "scr_welcome.h"
 
-#define WELCOME_TEXT_LINE_1_LEN (8)
-#define WELCOME_TEXT_LINE_2_LEN (5)
-#define WELCOME_TEXT_TOTAL_LEN (WELCOME_TEXT_LINE_1_LEN + WELCOME_TEXT_LINE_2_LEN)
-
 static uint8_t welcome_text_index = 0;
 static const char *welcome_text_line_1 = "Welcome";
 static const char *welcome_text_line_2 = "to AK";
@@ -99,7 +95,7 @@ void scr_welcome_handle(ak_msg_t *msg)
 	{
 		APP_DBG_SIG("AC_DISPLAY_BUTON_%s_PRESSED\n", msg->sig == AC_DISPLAY_BUTON_UP_PRESSED ? "UP" : "DOWN");
 		timer_remove_attr(AC_TASK_DISPLAY_ID, AC_DISPLAY_WELCOME_TEXT_ANIM_TICK);
-		SCREEN_TRAN(scr_menu_game_handle, &scr_menu_game);
+		SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
 	}
 	break;
 

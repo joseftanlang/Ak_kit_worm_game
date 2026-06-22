@@ -1,9 +1,4 @@
 #include "worm_game_apple.h"
-#include "worm_game_border.h"
-#include "scr_worm.h"
-#include "scr_setting.h"
-
-#include <stdlib.h>
 
 // The apple must have a random position on the screen at all time, no duplicate apple overlapping anything
 // The apple must be eaten by the worm when the front of the worm touches the apple.
@@ -12,17 +7,11 @@
 // The apple will either spawn when there is no apple left or after 2 seconds of the previous apple being spawn.
 // The max number of the apple on the screen should be less than 5 at all times.
 
-#define BORDER_MARGIN 1
-#define APPLE_LIFE_SECONDS 3
-#define APPLE_RESPAWN_SECONDS 2
-#define APPLE_RANDOM_TRIES 32
-#define APPLE_BORDER_PADDING 1
-
 //  The worm_max_length is the maximum length the worm can grow, which is determined by the size of the game area and the size of the worm segments.
 static uint16_t worm_max_length(void)
 {
-	uint32_t border_w = (game_border.width != 0) ? game_border.width : SCR_WIDTH;
-	uint32_t border_h = (game_border.height != 0) ? game_border.height : SCR_HEIGHT;
+	uint32_t border_w = (worm_game_border.width != 0) ? worm_game_border.width : SCR_WIDTH;
+	uint32_t border_h = (worm_game_border.height != 0) ? worm_game_border.height : SCR_HEIGHT;
 	uint32_t max_cols = border_w / WORM_MOVE_STEP;
 	uint32_t max_rows = border_h / WORM_MOVE_STEP;
 	uint32_t max_length = max_cols * max_rows;
@@ -71,7 +60,7 @@ static uint8_t apple_position_is_valid(uint32_t x, uint32_t y, uint32_t w, uint3
 		}
 	}
 
-	if (apple_rect_overlap(x, y, w, h, game_worm.x, game_worm.y, game_worm.width, game_worm.height))
+	if (apple_rect_overlap(x, y, w, h, worm_game.x, worm_game.y, worm_game.width, worm_game.height))
 	{
 		return 0;
 	}
@@ -105,12 +94,12 @@ static void apple_get_spawn_bounds(uint32_t *min_x, uint32_t *min_y, uint32_t *m
 	uint32_t border_w = SCR_WIDTH - (BORDER_MARGIN * 2);
 	uint32_t border_h = SCR_HEIGHT - (BORDER_MARGIN * 2);
 
-	if (game_border.width != 0 && game_border.height != 0)
+	if (worm_game_border.width != 0 && worm_game_border.height != 0)
 	{
-		border_x = game_border.x;
-		border_y = game_border.y;
-		border_w = game_border.width;
-		border_h = game_border.height;
+		border_x = worm_game_border.x;
+		border_y = worm_game_border.y;
+		border_w = worm_game_border.width;
+		border_h = worm_game_border.height;
 	}
 
 	*min_x = border_x + APPLE_BORDER_PADDING;
@@ -172,8 +161,8 @@ void apple_init(void)
 {
 	uint8_t active_limit = apple_get_active_limit();
 
-	timer_remove_attr(GAME_APPLE_ID, AC_APPLE_TICK);
-	timer_set(GAME_APPLE_ID, AC_APPLE_TICK, 1000, TIMER_PERIODIC);
+	timer_remove_attr(WORM_GAME_APPLE_ID, AC_APPLE_TICK);
+	timer_set(WORM_GAME_APPLE_ID, AC_APPLE_TICK, 1000, TIMER_PERIODIC);
 
 	for (uint8_t i = 0; i < MAX_APPLES; i++)
 	{
@@ -206,12 +195,12 @@ void counting_apples(void)
 		if (apples_no[i].is_active)
 		{
 			if (apple_rect_overlap(apples_no[i].x, apples_no[i].y, apples_no[i].width, apples_no[i].height,
-								   game_worm.x, game_worm.y, game_worm.width, game_worm.height))
+								   worm_game.x, worm_game.y, worm_game.width, worm_game.height))
 			{
 				/* worm ate this apple */
 				score_inc();
 				worm_grow();
-				if (game_worm.length >= worm_max_length())
+				if (worm_game.length >= worm_max_length())
 				{
 					worm_game_finish(1);
 				}
@@ -249,7 +238,7 @@ void counting_apples(void)
 }
 
 // Handle incoming messages for the apple system, responding to initialization and tick signals to manage apple state and behavior.
-void game_apple_handler(ak_msg_t *msg)
+void worm_game_apple_handler(ak_msg_t *msg)
 {
 	switch (msg->sig)
 	{
