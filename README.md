@@ -127,6 +127,12 @@ The game is organized as a screen-driven application:
 
 The worm screen itself is also responsible for starting and stopping the background music loop, so the audio state always matches the visible game state.
 
+## Game Sequence
+This is the entire game sequence of the worm game from start to end.
+<div align="center">
+  <img src="resources/image/FPT_worm.io.png" alt="Startup 1" width="512" height="256" />
+</div>
+
 ## Game design
 
 The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
