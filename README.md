@@ -130,7 +130,7 @@ The worm screen itself is also responsible for starting and stopping the backgro
 ## Game Sequence
 This is the entire game sequence of the worm game from start to end.
 <div align="center">
-  <img src="resources/image/FPT_worm.io.png" alt="Startup 1" height = "512" />
+  <img src="resources/image/FPT_worm.io_w.png" alt="Startup 1" height = "512" />
 </div>
 
 ## Game design
