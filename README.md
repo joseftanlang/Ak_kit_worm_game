@@ -1,20 +1,19 @@
-# AK Worm Game for AK Embedded Base Kit
+# Game built with AK Embedded Base Kit
 
 <div align="center">
 
-  <a href="https://github.com/user-attachments/assets/ab6bf85c-af58-42b9-b7f9-4c1330c70b53">
+  <a href="https://github.com/user-attachments/assets/260708f2-1979-4f4c-b98b-55667a50c3d3">
     <video
-      src="https://github.com/user-attachments/assets/ab6bf85c-af58-42b9-b7f9-4c1330c70b53"
+      src="https://github.com/user-attachments/assets/260708f2-1979-4f4c-b98b-55667a50c3d3"
       controls
     ></video>
-
   </a>
-
 </div>
 
 This repository contains the firmware for the worm game that runs on the AK Embedded Base Kit with STM32L151. The project is a hands-on example of event-driven embedded programming: the screen, buttons, buzzer, timers, EEPROM, and task scheduler work together to present a complete game loop rather than a single demo screen.
 
 The board is designed for embedded learning and prototyping. It combines a 1.54" OLED display, 3 push buttons, a buzzer, RS485, Qwiic, and Grove connectivity so you can study interaction, timing, persistence, and modular firmware architecture on real hardware.
+
 <div align="center">
   <a href="https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu">
     <img src="hardware/images/ak-embedded-base-kit-version-3.jpg" width="480"/>
@@ -140,8 +139,11 @@ The game UI is structured into a few clear screens that guide the player from po
 ### Startup Screen
 
 <div align="center">
-  <img src="resources/image/worm_startup_screen_anim.gif" alt="Startup 1" width="512" height="256" />
+  <img src="resources/image/worm_screen.png" alt="Startup 1" width="512"/>
 </div>
+<!-- <div style="width: 100%; text-align: center;">
+  <img src="resources/image/worm_screen.png" alt="Startup 1" style="width: 100%; max-width: 100%; height: auto; display: inline-block;">
+</div> -->
 
 The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
 
@@ -198,13 +200,13 @@ The phrase “game ID” in this codebase is best understood as the internal tas
 
 The IDs are declared in [application/sources/app/task_list.h](application/sources/app/task_list.h). The main game-related entries are:
 
-- `GAME_APPLE_ID` - apple spawning and apple lifecycle.
-- `GAME_WORM_ID` - worm movement and direction control.
-- `GAME_SCORE_ID` - score calculation and persistence.
-- `GAME_EATING_ID` - eating detection and related interactions.
-- `GAME_BORDER_ID` - border and collision boundary management.
-- `GAME_LIVES_ID` - lives and survival logic.
-- `GAME_GAMER_ID` - the main game coordinator and periodic game tick.
+- `WORM_GAME_APPLE_ID` - apple spawning and apple lifecycle.
+- `WORM_GAME_WORM_ID` - worm movement and direction control.
+- `WORM_GAME_SCORE_ID` - score calculation and persistence.
+- `WORM_GAME_EATING_ID` - eating detection and related interactions.
+- `WORM_GAME_BORDER_ID` - border and collision boundary management.
+- `WORM_GAME_LIVES_ID` - lives and survival logic.
+- `WORM_GAME_GAMER_ID` - the main game coordinator and periodic game tick.
 
 The application-level task IDs around them include the system, display, shell, interface, debug, and communication tasks. That split is important because the game is not a standalone loop; it is one module inside a larger embedded runtime.
 
