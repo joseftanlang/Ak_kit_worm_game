@@ -29,8 +29,8 @@
 #include "worm_game_worm.h"
 
 //codes
-#define WORM_START_POSITION_X  (50)
-#define WORM_START_POSITION_Y  (35)
+#define WORM_START_POSITION_X  (51)
+#define WORM_START_POSITION_Y  (36)
 #define WORM_START_WIDTH       (20)
 #define WORM_START_HEIGHT      (5)
 

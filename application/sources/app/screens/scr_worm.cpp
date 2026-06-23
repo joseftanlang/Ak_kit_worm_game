@@ -110,12 +110,15 @@ void view_scr_worm()
 	{
 		if (apples_no[i].is_active)
 		{
-			view_render.drawBitmap((int16_t)apples_no[i].x,
-								   (int16_t)apples_no[i].y,
-								   bitmap_apple,
-								   APPLE_WIDTH,
-								   APPLE_HEIGHT,
-								   WHITE);
+			// draw apple image
+			view_render.drawBitmap(
+				(int16_t)apples_no[i].x,
+				(int16_t)apples_no[i].y,
+				bitmap_apple,
+				APPLE_WIDTH,
+				APPLE_HEIGHT,
+				WHITE);
+
 		}
 	}
 
@@ -192,6 +195,13 @@ static void view_draw_worm()
 								  WORM_MOVE_STEP,
 								  1,
 								  WHITE);
+		// worm body border
+		// view_render.drawRect(
+		// 	(int16_t)segment->x,
+		// 	(int16_t)segment->y,
+		// 	WORM_MOVE_STEP,
+		// 	WORM_MOVE_STEP,
+		// 	WHITE);
 	}
 
 	// Draw the head of the worm as a filled circle with a slightly larger radius to create a rounded appearance. The center of the head is calculated based on the position of the first segment in the trail (the head) and the movement step, which determines how far the center is from the top-left corner of the head segment. This creates a visually distinct head for the worm, differentiating it from the body segments.
@@ -201,6 +211,13 @@ static void view_draw_worm()
 	// The head is drawn as two filled circles to create a layered effect, with the outer circle slightly larger than the inner circle. This gives the head a more rounded and visually appealing appearance, making it stand out from the body segments. The eyes are then drawn as pixels on top of the head, positioned based on the current direction of movement to give the worm a sense of orientation.
 	view_render.fillCircle(center_x, center_y, (WORM_MOVE_STEP / 2) + 1, WHITE);
 	view_render.fillCircle(center_x, center_y, WORM_MOVE_STEP / 2, WHITE);
+	// WORM HEAD BORDER
+	// view_render.drawRect(
+	// 	worm_game.trail[0].x,
+	// 	worm_game.trail[0].y,
+	// 	WORM_MOVE_STEP,
+	// 	WORM_MOVE_STEP,
+	// 	WHITE);
 
 	// The switch statement sets the eye_dx1, eye_dy1, eye_dx2, and eye_dy2 variables based on the current direction of the worm. These variables determine the relative positions of the worm's eyes on its head, allowing them to be drawn in the correct location for each movement direction (right, left, down, up). This adds a visual cue to indicate the direction the worm is facing, enhancing the overall appearance of the game.
 	switch (worm_get_direction())

@@ -2,6 +2,12 @@
 
 worm_game_t worm_game = {0};
 
+static inline void get_worm_head(uint32_t *x, uint32_t *y)
+{
+    *x = worm_game.trail[0].x;
+    *y = worm_game.trail[0].y;
+}
+
 // worm_clamp_trail_length ensures that the worm's trail length does not exceed the maximum allowed length (WORM_MAX_TRAIL).
 static uint16_t worm_clamp_trail_length(uint16_t length)
 {
@@ -61,6 +67,7 @@ void worm_init(void)
 	// Initialize the worm's trail segments to the starting position, with the head at the front and the body segments trailing behind it.
 	for (uint16_t i = 0; i < WORM_MAX_TRAIL; i++)
 	{
+		view_render.drawRect(worm_game.trail[i].x, worm_game.trail[i].y, WORM_MOVE_STEP, WORM_MOVE_STEP, WHITE);
 		worm_game.trail[i].x = 0;
 		worm_game.trail[i].y = 0;
 	}
@@ -68,6 +75,7 @@ void worm_init(void)
 	for (uint16_t i = 0; i < worm_game.length; i++)
 	{
 		uint32_t segment_x = (WORM_START_POSITION_X > (i * WORM_MOVE_STEP)) ? (WORM_START_POSITION_X - (i * WORM_MOVE_STEP)) : 0;
+		view_render.drawRect((int16_t)segment_x, (int16_t)WORM_START_POSITION_Y, WORM_MOVE_STEP, WORM_MOVE_STEP, WHITE);
 		worm_game.trail[i].x = (uint8_t)segment_x;
 		worm_game.trail[i].y = (uint8_t)WORM_START_POSITION_Y;
 	}
@@ -214,6 +222,14 @@ void worm_game_worm_handler(ak_msg_t *msg)
 					worm_game_finish(0);
 				}
 			}
+			task_post_pure_msg(WORM_GAME_APPLE_ID, AC_APPLE_COLLISION_CHECK);
+
+			view_render.drawRect(
+				worm_game.trail[0].x,
+				worm_game.trail[0].y,
+				WORM_MOVE_STEP,
+				WORM_MOVE_STEP,
+				WHITE);
 		}
 		break;
 

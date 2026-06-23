@@ -41,6 +41,7 @@
 enum {
 	AC_APPLE_INIT = AK_USER_DEFINE_SIG,
 	AC_APPLE_TICK,
+	AC_APPLE_COLLISION_CHECK,
 };
 
 typedef struct {
@@ -56,7 +57,6 @@ typedef struct {
 
 extern worm_game_apple_t apples_no[MAX_APPLES];
 
-void counting_apples(void);
 void apple_init(void);
 
 #endif //__WORM_GAME_APPLE_H__
