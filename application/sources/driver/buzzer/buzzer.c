@@ -31,6 +31,8 @@ static const buzzer_music_t buzzer_music_table[] = {
 	{BUZZER_SOUND_JINGLE_BELLS,		tones_jingle_bells},
 	{BUZZER_SOUND_MARIO_KART,		tones_mario_kart},
 	{BUZZER_SOUND_PIRATES_CARIBBEAN,	tones_pirates},
+	{BUZZER_SOUND_WHEELS_ON_THE_BUS,	tones_wheels_on_the_bus},
+	{BUZZER_SOUND_WE_WILL_ROCK_YOU,	tones_we_will_rock_you},
 	{BUZZER_SOUND_MAX,				(const Tone_TypeDef*)0}
 };
 

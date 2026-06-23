@@ -30,8 +30,8 @@
 
 //codes
 #define MAX_APPLES      (8)
-#define APPLE_WIDTH     (10)
-#define APPLE_HEIGHT    (10)
+#define APPLE_WIDTH     (7)
+#define APPLE_HEIGHT    (7)
 #define BORDER_MARGIN 1
 #define APPLE_LIFE_SECONDS 3
 #define APPLE_RESPAWN_SECONDS 2

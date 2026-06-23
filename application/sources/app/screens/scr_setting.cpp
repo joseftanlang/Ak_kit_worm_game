@@ -2,7 +2,7 @@
 
 static uint8_t selected_item = 0; // 0 = speed, 1 = apples, 2 = song, 3 = buzzer
 static uint8_t setting_anim_tick = 0;
-static uint8_t setting_worm_speed = 1;     /* 1..5 */
+static uint8_t setting_worm_speed = 3;     /* 1..5 */
 static uint8_t setting_apple_count = 1;    /* 1..8 */
 static uint8_t setting_song_index = 0;     /* 0..4 */
 static uint8_t setting_buzzer_enabled = 0; /* default: BUZZER OFF */
@@ -17,18 +17,18 @@ typedef struct
 } setting_persist_t;
 
 static const uint16_t setting_worm_tick_intervals_ms[SETTING_WORM_SPEED_MAX] = {
-    300, 240, 180, 130, 90,
+    180, 150, 110, 90, 50,
 };
 
 static const char *setting_speed_values[] = {"1", "2", "3", "4", "5"};
 static const char *setting_apple_values[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
-static const char *setting_song_values[] = {"WELCOME", "MARIO", "HIGH", "LOW", "XMAS"};
+static const char *setting_song_values[] = {"ROCK", "MARIO", "PIRATES", "BUS", "XMAS"};
 
 static const buzzer_sound_t setting_song_sounds[] = {
-    BUZZER_SOUND_WELCOME,
+    BUZZER_SOUND_WE_WILL_ROCK_YOU,
     BUZZER_SOUND_SUPER_MARIO,
-    BUZZER_SOUND_HIGHSCORE,
-    BUZZER_SOUND_LOWSCORE,
+    BUZZER_SOUND_PIRATES_CARIBBEAN,
+    BUZZER_SOUND_WHEELS_ON_THE_BUS,
     BUZZER_SOUND_JINGLE_BELLS,
 };
 

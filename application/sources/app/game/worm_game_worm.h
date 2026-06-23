@@ -25,6 +25,8 @@
 #include "worm_game_border.h"
 #include "worm_game_lives.h"
 #include "scr_worm.h"
+#include "worm_game_score.h"
+#include "worm_game_worm.h"
 
 //codes
 #define WORM_START_POSITION_X  (50)

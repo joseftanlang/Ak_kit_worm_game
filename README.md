@@ -234,11 +234,11 @@ The available settings are:
 
 Speed is stored as a value from `1` to `5` and mapped to actual tick intervals:
 
-- `1` - 300 ms
-- `2` - 240 ms
-- `3` - 180 ms
-- `4` - 130 ms
-- `5` - 90 ms
+- `1` - 180 ms
+- `2` - 150 ms
+- `3` - 110 ms
+- `4` - 90 ms
+- `5` - 50 ms
 
 Higher speed means the worm updates more often and the game becomes harder.
 
@@ -250,11 +250,11 @@ Apple count is stored from `1` to `8`. This controls how many apples can be acti
 
 The available looped songs are:
 
-- `WELCOME`
-- `MARIO`
-- `HIGH`
-- `LOW`
-- `XMAS`
+- `We Will We Will Rock You (ROCK)`
+- `Mario Kart (MARIO)`
+- `Pirates of the Caribbean (PIRATES)`
+- `The Wheel On The Bus (BUS)`
+- `Jingle Bells (XMAS)`
 
 The game uses the selected sound both when entering the worm screen and while the screen is active, provided the buzzer is enabled.
 

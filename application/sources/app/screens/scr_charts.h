@@ -28,7 +28,7 @@
 
 #define CHART_WIDTH (128)
 #define CHART_HEIGHT (64)
-#define CHART_ANIM_INTERVAL_MS (70)
+#define CHART_ANIM_INTERVAL_MS (30) // Original is 100 Animation tick interval in milliseconds, controlling the speed of the worm and star animations on the charts screen
 #define CHART_WORM_STEP_PX (3)
 #define CHART_WORM_SEGMENTS (7)
 #define CHART_WORM_SEGMENT_GAP (5)
@@ -37,8 +37,6 @@
 #define AC_CHARTS_ANIM_TICK (AK_USER_DEFINE_SIG + 180)
 #define CHART_MODE_SIG (11)
 #define CHART_STAR_COUNT (10)
-
-
 
 //codes
 

@@ -462,3 +462,82 @@ const Tone_TypeDef tones_pirates[] = {
 
 	{   0, 0}
 };
+
+
+const Tone_TypeDef tones_we_will_rock_you[] = {
+	// --- Verse 1: "Boom Boom Clap" Signature Beat Pattern ---
+	{ 150, 15}, // Low Thump
+	{ 150, 15}, // Low Thump
+	{1200, 25}, // High Clap Accent
+	{   0, 20}, // Rest
+	
+	{ 150, 15}, // Low Thump
+	{ 150, 15}, // Low Thump
+	{1200, 25}, // High Clap Accent
+	{   0, 30}, // Rest
+
+	// --- Chorus Vocal Line: "We will, we will rock you!" ---
+	{ 659, 15}, // E5  ("We")
+	{ 659, 15}, // E5  ("will,")
+	{ 659, 15}, // E5  ("we")
+	{ 587, 15}, // D5  ("will")
+	{ 659, 35}, // E5  ("rock")
+	{ 784, 15}, // G5  ("you!")
+	{   0, 25}, // Rest
+
+	// --- Repeat Beat Pattern ---
+	{ 150, 15}, 
+	{ 150, 15}, 
+	{1200, 25}, 
+	{   0, 20}, 
+
+	// --- Chorus Vocal Line Repeat ---
+	{ 659, 15}, // E5  ("We")
+	{ 659, 15}, // E5  ("will,")
+	{ 659, 15}, // E5  ("we")
+	{ 587, 15}, // D5  ("will")
+	{ 659, 35}, // E5  ("rock")
+	{ 784, 35}, // G5  ("you!")
+
+	{   0,  0}  // Array Terminator
+};
+
+
+const Tone_TypeDef tones_wheels_on_the_bus[] = {
+	// "The wheels on the bus go round and round"
+	{ 523, 15}, // C5
+	{ 698, 15}, // F5
+	{ 698, 10}, // F5
+	{ 698, 10}, // F5
+	{ 698, 15}, // F5
+	{ 880, 15}, // A5
+	{1047, 15}, // C6
+	{ 880, 15}, // A5
+	{ 698, 25}, // F5
+
+	// "Round and round, round and round"
+	{ 784, 15}, // G5
+	{ 784, 10}, // G5
+	{ 784, 15}, // G5
+	{ 659, 25}, // E5
+	{ 784, 15}, // G5
+	{1047, 25}, // C6
+
+	// "The wheels on the bus go round and round"
+	{ 523, 15}, // C5
+	{ 698, 15}, // F5
+	{ 698, 10}, // F5
+	{ 698, 10}, // F5
+	{ 698, 15}, // F5
+	{ 880, 15}, // A5
+	{1047, 15}, // C6
+	{ 880, 15}, // A5
+	{ 698, 25}, // F5
+
+	// "All through the town!"
+	{ 784, 20}, // G5
+	{1047, 20}, // C6
+	{ 698, 35}, // F5
+
+	{   0,  0}  // Array Terminator
+};

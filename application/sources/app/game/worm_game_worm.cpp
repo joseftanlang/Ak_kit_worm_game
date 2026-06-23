@@ -235,6 +235,7 @@ void worm_game_worm_handler(ak_msg_t *msg)
 
 	case AC_WORM_GROW:
 		worm_grow();
+		score_commit_current();
 		break;
 
 	default:
