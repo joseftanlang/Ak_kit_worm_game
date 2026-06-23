@@ -47,11 +47,11 @@ typedef struct {
 } worm_game_point_t;
 
 typedef struct {
-    uint32_t x;
-    uint32_t y;
-    uint32_t width;
-    uint32_t height;
-    uint8_t worm_image;         
+    uint32_t x;                 /* top-left corner of the worm's head */
+    uint32_t y;                 /* top-left corner of the worm's head */
+    uint32_t width;             /* width of the worm's head (and body segments) */
+    uint32_t height;            /* height of the worm's head (and body segments) */
+    uint8_t worm_image;         /* index of the worm image to use for rendering (if applicable) */
     uint8_t dir;                /* worm_game_dir_t value */
     uint16_t length;            /* number of segments in the worm trail (including head) */ 
     uint16_t grow_pending;      /* number of segments to grow (not yet applied to length) */

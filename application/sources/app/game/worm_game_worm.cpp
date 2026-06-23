@@ -134,10 +134,10 @@ uint8_t worm_advance(void)
 	}
 
 	/* wrap around inside the game border (or screen if border not set) */
-	uint32_t bx = (worm_game_border.width != 0) ? worm_game_border.x : 0;
-	uint32_t by = (worm_game_border.height != 0) ? worm_game_border.y : 0;
-	uint32_t bw = (worm_game_border.width != 0) ? worm_game_border.width : SCR_WIDTH;
-	uint32_t bh = (worm_game_border.height != 0) ? worm_game_border.height : SCR_HEIGHT;
+	uint32_t bx = (worm_game_border.width != 0) ? worm_game_border.x : 0;             	//bx is the x position of the border, or 0 if border is not set
+	uint32_t by = (worm_game_border.height != 0) ? worm_game_border.y : 0;				//by is the y postition of the broder
+	uint32_t bw = (worm_game_border.width != 0) ? worm_game_border.width : SCR_WIDTH;	//bw is the width of the border, or the screen if border is not set
+	uint32_t bh = (worm_game_border.height != 0) ? worm_game_border.height : SCR_HEIGHT;//bh is the height of the border, or the screen if border is not set
 
 	if ((uint32_t)worm_next_head.x + WORM_MOVE_STEP > bx + bw)
 	{

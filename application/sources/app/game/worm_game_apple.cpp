@@ -164,8 +164,10 @@ static void apple_collision_check(void)
 	{
 		if (apples_no[i].is_active)
 		{
-			/* GRID SAFE COLLISION USING GLOBAL WORM COORDS */
-			if (worm_game.x == apples_no[i].x && worm_game.y == apples_no[i].y)
+			/* Head-overlap collision: any part of the worm head touching the apple counts */
+			if (apple_rect_overlap(
+				worm_game.x, worm_game.y, worm_game.width, worm_game.height,
+				apples_no[i].x, apples_no[i].y, apples_no[i].width, apples_no[i].height))
 			{
 				score_inc();
 				worm_grow();
