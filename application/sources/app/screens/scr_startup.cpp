@@ -76,7 +76,7 @@ void scr_startup_handle(ak_msg_t *msg)
 {
 	switch (msg->sig)
 	{
-	case AC_DISPLAY_INITIAL:
+	case SCREEN_ENTRY:
 	{
 		APP_DBG_SIG("AC_DISPLAY_INITIAL\n");
 		view_render.initialize();

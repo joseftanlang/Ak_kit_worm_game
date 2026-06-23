@@ -314,7 +314,7 @@ static void app_init_state_machine()
 
 static void app_task_init()
 {
-    SCREEN_CTOR(&scr_mng_app, scr_startup_handle, &scr_startup);
+    SCREEN_CTOR(&scr_mng_app, scr_worm_menu_game_handle, &scr_menu_game);
 
     task_post_pure_msg(AC_TASK_RF24_IF_ID, AC_RF24_IF_INIT_NETWORK);
     task_post_pure_msg(AC_TASK_UART_IF_ID, AC_UART_IF_INIT);

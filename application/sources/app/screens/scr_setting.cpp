@@ -378,6 +378,8 @@ void scr_game_setting_handle(ak_msg_t *msg)
         setting_toggle_selected_item();
         break;
 
+    case 17:
+    case 18:
     case 19:
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
         timer_remove_attr(AC_TASK_DISPLAY_ID,

@@ -1,20 +1,20 @@
 #include "scr_menu.h"
 
-static const char *menu_items[] = {"Idle", "Worm", "Charts", "Settings"};
+static const char *menu_items[] = {"Worm", "Charts", "Settings"};
 static int menu_count = sizeof(menu_items) / sizeof(menu_items[0]);
 static int menu_index = 0;
 static int menu_view_offset = 0;
-static uint8_t menu_anim_tick = 0;
+// static uint8_t menu_anim_tick = 0;
 static uint32_t menu_last_input_ms = 0;
 
-#define MENU_ANIM_INTERVAL_MS (70)
-#define MENU_ANIM_PAUSE_AFTER_INPUT_MS (300)
-#define MENU_ANIM_TICK_SIG (AK_USER_DEFINE_SIG + 181)
-#define MENU_VISIBLE_COUNT (2)
+// #define MENU_ANIM_INTERVAL_MS (70)
+// #define MENU_ANIM_PAUSE_AFTER_INPUT_MS (300)
+// #define MENU_ANIM_TICK_SIG (AK_USER_DEFINE_SIG + 181)
+#define MENU_VISIBLE_COUNT (3)
 #define MENU_TITLE_Y (3)
 #define MENU_DIVIDER_Y (14)
 #define MENU_ITEMS_TOP_Y (20)
-#define MENU_ITEM_STEP_Y (20)
+#define MENU_ITEM_STEP_Y (10)
 #define MENU_ITEM_HEIGHT (18)
 
 // Simple starfield animation for menu background
@@ -38,8 +38,8 @@ static menu_star_t menu_stars[] = {
 static const uint8_t menu_star_count = sizeof(menu_stars) / sizeof(menu_stars[0]);
 
 static void view_scr_menu();
-static void menu_tick();
-static void menu_draw_background();
+// static void menu_tick();
+// static void menu_draw_background();
 static void menu_draw_item(int i, int y);
 static void menu_draw_title();
 
@@ -54,43 +54,43 @@ view_screen_t scr_menu_game = {
     .focus_item = 0,
 };
 
-static void menu_tick()
-{
-    menu_anim_tick++;
+// static void menu_tick()
+// {
+//     menu_anim_tick++;
 
-    for (uint8_t i = 0; i < menu_star_count; i++)
-    {
-        if (menu_stars[i].x <= menu_stars[i].speed)
-        {
-            menu_stars[i].x = 127;
-            menu_stars[i].y = (uint8_t)((menu_anim_tick + (i * 20)) % 64);
-        }
-        else
-        {
-            menu_stars[i].x -= menu_stars[i].speed;
-        }
-    }
-}
+//     for (uint8_t i = 0; i < menu_star_count; i++)
+//     {
+//         if (menu_stars[i].x <= menu_stars[i].speed)
+//         {
+//             menu_stars[i].x = 127;
+//             menu_stars[i].y = (uint8_t)((menu_anim_tick + (i * 20)) % 64);
+//         }
+//         else
+//         {
+//             menu_stars[i].x -= menu_stars[i].speed;
+//         }
+//     }
+// }
 
-static void menu_draw_background()
-{
-    for (uint8_t i = 0; i < menu_star_count; i++)
-    {
-        if (((menu_anim_tick + i) & 0x01) == 0 || menu_stars[i].speed > 1)
-        {
-            view_render.drawPixel(menu_stars[i].x, menu_stars[i].y, WHITE);
-        }
-    }
+// static void menu_draw_background()
+// {
+//     for (uint8_t i = 0; i < menu_star_count; i++)
+//     {
+//         if (((menu_anim_tick + i) & 0x01) == 0 || menu_stars[i].speed > 1)
+//         {
+//             view_render.drawPixel(menu_stars[i].x, menu_stars[i].y, WHITE);
+//         }
+//     }
 
-    view_render.drawRect(0, 0, 128, 64, WHITE);
-}
+//     view_render.drawRect(0, 0, 128, 64, WHITE);
+// }
 
 static void menu_draw_title()
 {
     view_render.setTextSize(1);
     view_render.setTextColor(WHITE);
-    view_render.setCursor(20, MENU_TITLE_Y);
-    view_render.print("WORM GAME MENU");
+    view_render.setCursor(35, MENU_TITLE_Y);
+    view_render.print("WORM GAME");
 
     view_render.drawFastHLine(0, MENU_DIVIDER_Y, 128, WHITE);
 }
@@ -101,15 +101,15 @@ static void menu_draw_item(int i, int y)
 
     if (i == menu_index)
     {
-        view_render.fillRoundRect(2, y - 1, 124, MENU_ITEM_HEIGHT, 2, WHITE);
-        view_render.setTextColor(BLACK);
+        // view_render.fillRoundRect(2, y - 1, 124, MENU_ITEM_HEIGHT, 2, WHITE);
+        // view_render.setTextColor(BLACK);
         view_render.setCursor(8, y + 5);
         view_render.print("> ");
         view_render.print(label);
     }
     else
     {
-        view_render.drawRoundRect(2, y - 1, 124, MENU_ITEM_HEIGHT, 2, WHITE);
+        // view_render.drawRoundRect(2, y - 1, 124, MENU_ITEM_HEIGHT, 2, WHITE);
         view_render.setTextColor(WHITE);
         view_render.setCursor(8, y + 5);
         view_render.print("  ");
@@ -120,7 +120,7 @@ static void menu_draw_item(int i, int y)
 static void view_scr_menu()
 {
     view_render.clear();
-    menu_draw_background();
+    // menu_draw_background();
     menu_draw_title();
 
     for (int row = 0; row < MENU_VISIBLE_COUNT; row++)
@@ -138,39 +138,41 @@ void scr_worm_menu_game_handle(ak_msg_t *msg)
 {
     switch (msg->sig)
     {
-    case SCREEN_ENTRY:
+    case AC_DISPLAY_INITIAL:
     {
-        view_render.initialize();
-        view_render_display_on();
+        APP_DBG_SIG("AC_DISPLAY_INITIAL\n");
+		view_render.initialize();
+		view_render_display_on();
+		view_render_screen(&scr_menu_game);
         menu_index = 0;
         menu_view_offset = 0;
-        menu_anim_tick = 0;
+        // menu_anim_tick = 0;
         menu_last_input_ms = 0;
         g_controller_mode = 1;
 
-        timer_set(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG, MENU_ANIM_INTERVAL_MS, TIMER_PERIODIC);
+        // timer_set(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG, MENU_ANIM_INTERVAL_MS, TIMER_PERIODIC);
         view_scr_menu();
     }
     break;
 
     case SCREEN_EXIT:
     {
-        timer_remove_attr(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG);
+        // timer_remove_attr(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG);
     }
     break;
 
-    case MENU_ANIM_TICK_SIG:
-    {
-        uint32_t current_ms = sys_ctrl_millis();
-        if ((current_ms - menu_last_input_ms) < MENU_ANIM_PAUSE_AFTER_INPUT_MS)
-        {
-            break;
-        }
+    // case MENU_ANIM_TICK_SIG:
+    // {
+    //     uint32_t current_ms = sys_ctrl_millis();
+    //     if ((current_ms - menu_last_input_ms) < MENU_ANIM_PAUSE_AFTER_INPUT_MS)
+    //     {
+    //         break;
+    //     }
 
-        menu_tick();
-        view_scr_menu();
-    }
-    break;
+    //     menu_tick();
+    //     view_scr_menu();
+    // }
+    // break;
 
     case AC_DISPLAY_BUTON_UP_PRESSED:
     {
@@ -210,20 +212,20 @@ void scr_worm_menu_game_handle(ak_msg_t *msg)
         menu_last_input_ms = sys_ctrl_millis();
 
         BUZZER_PlaySound(BUZZER_SOUND_CLICK);
-        timer_remove_attr(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG);
+        // timer_remove_attr(AC_TASK_DISPLAY_ID, MENU_ANIM_TICK_SIG);
 
         switch (menu_index)
         {
+        // case 0:
+        //     SCREEN_TRAN(scr_idle_handle, &scr_idle);
+        //     break;
         case 0:
-            SCREEN_TRAN(scr_idle_handle, &scr_idle);
-            break;
-        case 1:
             SCREEN_TRAN(scr_worm_handle, &scr_worm);
             break;
-        case 2:
+        case 1:
             SCREEN_TRAN(scr_charts_handle, &scr_charts);
             break;
-        case 3:
+        case 2:
             SCREEN_TRAN(scr_game_setting_handle, &scr_game_setting);
             break;
         default:
