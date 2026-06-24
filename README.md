@@ -102,7 +102,6 @@ The firmware targets the AK Embedded Base Kit hardware stack:
 - 1.54" OLED display (V3) or 1.3" OLED display (V2)
 - 3 push buttons.
 - Buzzer for sound effects and looping music.
-- Additional interfaces on the board such as RS485, Qwiic, and Grove, which are part of the larger platform even when not used directly by the worm game.
 
 ### Memory Map
 
@@ -171,6 +170,13 @@ This is the core gameplay screen. The player controls the worm with Up/Down to c
 
 When the player crashes the worm, an overlay appears with the final score and options to retry or return to the menu. A short buzzer melody and a crisp visual overlay emphasize the result while preserving the final playfield for reference.
 
+### Charts Screen
+<div align="center">
+  <img src="resources/image/worm_charts.png" alt="Settings 1" width="512" height="256" />
+</div>
+
+On the WORLD LEADER RUN, a continuous animation of the worm moving from right to left would provide a visually engaging display of the player's progress. As the game progresses, the current position and score of the player would be prominently displayed on the chart, creating an immersive experience. The score would be retrieved from the non-volatile EEPROM memory, ensuring that high scores are accurately stored and preserved even after the game is powered off. To add an extra layer of competitive excitement, the top 3 high scores would be displayed on the chart, allowing players to see how they rank among the best.
+
 ### Settings Screen
 
 <div align="center">
@@ -181,7 +187,7 @@ Settings let the player tune gameplay and audio quickly:
 
 - Worm speed: five discrete steps from slow to fast.
 - Apple count: change the number of active apples (1–8).
-- Music selection: choose from a set of looped tunes.
+- Music selection: choose from a set of tunes.
 - Buzzer: toggle sound on or off.
 
 Controls are mapped consistently so a short hold action loads presets while single presses adjust the selected value.
@@ -291,6 +297,30 @@ In the worm screen:
 - Up and Down change worm direction.
 - Mode exits the screen or opens the score flow after game over.
 
+__Using a keyboard:__
+
+The code have been custmise to use a keyboard where you would need to firstly run the code from the application folder:
+```
+make com dev=/dev/ttyUSB0
+```
+After this then you would be able to see the following example:
+```
+taskID: 4       msgType:0x80    refCnt:1        sig:10       waitTime:0      exeTime:0
+taskID: 4       msgType:0x80    refCnt:1        sig:10       waitTime:0      exeTime:0
+taskID: 4       msgType:0x80    refCnt:1        sig:10       waitTime:0      exeTime:0
+```
+
+You can use the keyboard keys in the following table:
+
+| Keys | Command Output |
+| --- | --- |
+| 'W' or 'w' | UP BUTTON |
+| 'S' or 's' | DOWN BUTTON |
+| 'D' or 'd' | MODE BUTTON |
+| 'H' or 'h' | LONG MODE |
+
+
+
 ## Build
 
 Build the application from the repository root:
@@ -314,10 +344,12 @@ After building the bootloader and application, the firmware can be loaded throug
 Example:
 
 ```sh
+USB-C cable:
 ak_flash /dev/ttyUSB0 ak-base-kit-stm32l151-application.bin 0x08003000
 
 or
 
+ST-LINK:
 make flash
 ```
 

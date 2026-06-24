@@ -323,11 +323,31 @@ void scr_worm_handle(ak_msg_t *msg)
 
 	if (msg->sig == 12)
 	{ /* AC_DISPLAY_BUTON_UP_PRESSED */
+		
+		if (worm_game_finished)
+		{
+			timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
+			worm_music_stop();
+			SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
+		}
+		else
+		{
 		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_UP);
+		}
 	}
 	else if (msg->sig == 13)
 	{ /* AC_DISPLAY_BUTON_DOWN_PRESSED */
-		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_DOWN);
+		
+		if (worm_game_finished)
+		{
+			timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
+			worm_music_stop();
+			SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
+		}
+		else
+		{
+			task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_DOWN);
+		}
 	}
 	else if (msg->sig == 11)
 	{ /* AC_DISPLAY_BUTON_MODE_PRESSED */

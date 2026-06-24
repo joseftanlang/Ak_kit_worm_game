@@ -266,6 +266,16 @@ void task_polling_console()
                 case 'q': case 'Q':
                     task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_DOWN_MODE_PRESSED);
                     break;
+                
+                case 'h': case 'H':
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_HOLD);
+                    break;
+                case 'g': case 'G':
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_HOLD);
+                    break;
+                case 'j': case 'J':
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_DOWN_HOLD);
+                    break;
 
                 default:
                     handled = false;
