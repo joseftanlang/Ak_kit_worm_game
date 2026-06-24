@@ -1,3 +1,5 @@
+// If you want to see many cool animation do uncomments all the codes. and comment line 44 to 45
+
 #include "scr_startup.h"
 
 static void view_scr_startup();
@@ -38,13 +40,11 @@ void view_scr_startup()
 	view_render.setTextSize(1);
 	view_render.setTextColor(WHITE);
 
-	/* draw sliding logo (uses existing bitmap_dolphin) */
+	// Drawing the 2 penguins
 	view_render.drawBitmap(0, 15, image_WarningDolphin_1_bits, 45, 42, WHITE);
 	view_render.drawBitmap(80, 15, image_WarningDolphinFlip_bits, 45, 42, WHITE);
 
-	// view_render.drawBitmap(55, 40, bitmap_apple_test, 7, 7, WHITE);
-
-	/* title */
+	// Title text
 	view_render.setTextSize(2);
 	view_render.setCursor(10, 0);
 	view_render.print("WORM GAME");

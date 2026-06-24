@@ -682,7 +682,7 @@ int32_t shell_lcd(uint8_t *argv)
 		view_render.clear();
 		break;
 
-	case 'a':
+	case 'z':
 		view_render.setTextSize(2);
 		view_render.setTextColor(WHITE);
 		view_render.setCursor(10, 10);
@@ -698,13 +698,13 @@ int32_t shell_lcd(uint8_t *argv)
 		view_render.update();
 		break;
 
-	// case 'p':
-	// 	// draw a single pixel
-	// 	view_render.drawPixel(9, 1, WHITE);
-	// 	view_render.drawPixel(13, 4, WHITE);
-	// 	view_render.drawPixel(16, 7, WHITE);
-	// 	view_render.update();
-	// 	break;
+	case 'x':
+		// draw a single pixel
+		view_render.drawPixel(9, 1, WHITE);
+		view_render.drawPixel(13, 4, WHITE);
+		view_render.drawPixel(16, 7, WHITE);
+		view_render.update();
+		break;
 
 	case 'p':
 		shell_lcd_dump_framebuffer();
@@ -717,7 +717,7 @@ int32_t shell_lcd(uint8_t *argv)
 
 	return 0;
 }
-// ak-flash /dev/ttyUSB0 ./build_ak-base-kit-stm32l151-boot/ak-base-kit-stm32l151-boot.bin 0x08000000
+
 void shell_lcd_dump_framebuffer()
 {
 	const unsigned char *frame_buffer = view_render.getFrameBuffer();

@@ -14,6 +14,7 @@ static void score_top_load_if_needed(void)
 	}
 
 	uint32_t magic = 0;
+	// If the magic number is not present in EEPROM, initialize the top scores to 0 and write the magic number and scores to EEPROM.
 	if (eeprom_read(EEPROM_WORM_SCORE_MAGIC_ADDR, (uint8_t *)&magic, sizeof(magic)) != EEPROM_DRIVER_OK ||
 		magic != EEPROM_WORM_SCORE_MAGIC)
 	{
@@ -27,6 +28,7 @@ static void score_top_load_if_needed(void)
 		return;
 	}
 
+	// If the magic number is present, read the top scores from EEPROM. If reading fails, initialize the top scores to 0.
 	if (eeprom_read(EEPROM_WORM_SCORE_TOP3_ADDR, (uint8_t *)game_top_scores, sizeof(game_top_scores)) != EEPROM_DRIVER_OK)
 	{
 		game_top_scores[0] = 0;
@@ -45,6 +47,7 @@ static bool score_top_insert_unique(uint32_t value)
 	uint32_t normalized[3] = {0};
 	uint8_t count = 0;
 
+	// Merge the new score with the existing top scores, remove duplicates, and sort them in descending order.
 	for (uint8_t i = 0; i < 4; i++)
 	{
 		uint32_t candidate = merged[i];
@@ -115,6 +118,7 @@ static bool score_top_insert_unique(uint32_t value)
 	return changed;
 }
 
+// Initialize the current score to the starting score and load the top scores from EEPROM if needed.
 void score_init(void)
 {
 	score_top_load_if_needed();
@@ -123,11 +127,13 @@ void score_init(void)
 	game_score.score = START_SCORE;
 }
 
+// Reset the current score to the starting score.
 void score_reset(void)
 {
 	game_score.score = START_SCORE;
 }
 
+// Increment the current score by a predefined increment value.
 void score_inc(void)
 {
 	game_score.score += INCREMENT_SCORE;

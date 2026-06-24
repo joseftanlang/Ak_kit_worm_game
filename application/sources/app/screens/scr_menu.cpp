@@ -1,3 +1,5 @@
+// If you want to see many cool animation do uncomments all the codes.
+
 #include "scr_menu.h"
 
 static const char *menu_items[] = {"Worm", "Charts", "Settings"};
@@ -85,6 +87,7 @@ view_screen_t scr_menu_game = {
 //     view_render.drawRect(0, 0, 128, 64, WHITE);
 // }
 
+// Draw the title of the menu at the top of the screen, centered horizontally
 static void menu_draw_title()
 {
     view_render.setTextSize(1);
@@ -95,6 +98,7 @@ static void menu_draw_title()
     view_render.drawFastHLine(0, MENU_DIVIDER_Y, 128, WHITE);
 }
 
+// Draw a single menu item at the specified index and vertical position, highlighting
 static void menu_draw_item(int i, int y)
 {
     const char *label = menu_items[i];
@@ -139,7 +143,9 @@ void scr_worm_menu_game_handle(ak_msg_t *msg)
     switch (msg->sig)
     {
     case AC_DISPLAY_INITIAL:
-    {
+    {   
+        // Currently this is the initial screen, if you want to make other screen to be initial then please change the AC_DISPLAY_INITIAL signal to other screen's handle function.
+        // Replace AC_DISPLAY_INITTIAL to SCREEN_ENTRY
         APP_DBG_SIG("AC_DISPLAY_INITIAL\n");
 		view_render.initialize();
 		view_render_display_on();
@@ -216,6 +222,8 @@ void scr_worm_menu_game_handle(ak_msg_t *msg)
 
         switch (menu_index)
         {
+        // If you want to see the IDLE screen, please uncomment the following code and comment out the WORM screen code.make sure the index is correct
+
         // case 0:
         //     SCREEN_TRAN(scr_idle_handle, &scr_idle);
         //     break;

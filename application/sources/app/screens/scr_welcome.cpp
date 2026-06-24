@@ -1,3 +1,4 @@
+// This screen can only be seen through the idle screen when pressed mode button.
 #include "scr_welcome.h"
 
 static uint8_t welcome_text_index = 0;
@@ -46,6 +47,7 @@ void view_scr_welcome()
 	view_render.setCursor(76, 12);
 	welcome_print_text_partial(welcome_text_line_1, welcome_text_index);
 	view_render.setCursor(84, 25);
+	// If the welcome_text_index is greater than the length of the first line, print the second line as well, but only up to the number of characters that have been revealed so far.
 	if (welcome_text_index > WELCOME_TEXT_LINE_1_LEN)
 	{
 		welcome_print_text_partial(welcome_text_line_2, welcome_text_index - WELCOME_TEXT_LINE_1_LEN);

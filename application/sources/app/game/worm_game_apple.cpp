@@ -7,8 +7,6 @@
 // The apple will either spawn when there is no apple left or after 2 seconds of the previous apple being spawn.
 // The max number of the apple on the screen should be less than 5 at all times.
 
-
-
 worm_game_apple_t apples_no[MAX_APPLES];
 
 // Generate a random number between min_value and max_value (inclusive) using the rand() function. If max_value is less than or equal to min_value, return min_value.
@@ -95,6 +93,7 @@ static uint8_t apple_spawn_slot(uint8_t index)
 
 	for (uint8_t attempt = 0; attempt < APPLE_RANDOM_TRIES; attempt++)
 	{
+		// This x and y is for the random spawn position of the apple, ensuring it is within the border and not on the edges.
 		uint32_t x = bx + (apple_random_u32(1, columns - 2) * WORM_MOVE_STEP);
 		uint32_t y = by + (apple_random_u32(1, rows - 2) * WORM_MOVE_STEP);
 
@@ -162,12 +161,13 @@ static void apple_collision_check(void)
 
 	for (uint8_t i = 0; i < active_limit; i++)
 	{
+		// Check if the apple is active before checking for collision
 		if (apples_no[i].is_active)
 		{
-			/* Head-overlap collision: any part of the worm head touching the apple counts */
+			// Check if the worm's head overlaps with the apple's rectangle
 			if (apple_rect_overlap(
-				worm_game.x, worm_game.y, worm_game.width, worm_game.height,
-				apples_no[i].x, apples_no[i].y, apples_no[i].width, apples_no[i].height))
+					worm_game.x, worm_game.y, worm_game.width, worm_game.height,
+					apples_no[i].x, apples_no[i].y, apples_no[i].width, apples_no[i].height))
 			{
 				score_inc();
 				worm_grow();

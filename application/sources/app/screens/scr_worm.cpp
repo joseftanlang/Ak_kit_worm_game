@@ -33,6 +33,7 @@ void worm_game_reset(void)
 	worm_game_anim_tick = 0;
 }
 
+// worm_game_finish is called when the game ends, either by winning or losing. It sets the game state to finished, records whether the player won, stops the background music, removes the apple tick timer, and commits the current score to persistent storage.
 void worm_game_finish(uint8_t won)
 {
 	if (worm_game_finished)
@@ -118,7 +119,6 @@ void view_scr_worm()
 				APPLE_WIDTH,
 				APPLE_HEIGHT,
 				WHITE);
-
 		}
 	}
 
@@ -323,7 +323,7 @@ void scr_worm_handle(ak_msg_t *msg)
 
 	if (msg->sig == 12)
 	{ /* AC_DISPLAY_BUTON_UP_PRESSED */
-		
+
 		if (worm_game_finished)
 		{
 			timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);
@@ -332,12 +332,12 @@ void scr_worm_handle(ak_msg_t *msg)
 		}
 		else
 		{
-		task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_UP);
+			task_post_pure_msg(WORM_GAME_WORM_ID, AC_WORM_SET_DIR_UP);
 		}
 	}
 	else if (msg->sig == 13)
 	{ /* AC_DISPLAY_BUTON_DOWN_PRESSED */
-		
+
 		if (worm_game_finished)
 		{
 			timer_remove_attr(WORM_GAME_GAMER_ID, AC_WORM_TICK);

@@ -244,7 +244,6 @@ void task_polling_console()
                 switch (c)
                 {
                 case 'w': case 'W':
-                case 0x41: /* Arrow Up (ESC [ A) - simplified: treat 'A' as up when in controller mode */
                     task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_PRESSED);
                     break;
 
@@ -254,13 +253,10 @@ void task_polling_console()
                     break;
 
                 case 'd': case 'D':
+                case 'a': case 'A':
                 case ' ':       /* Space = MODE / select / back */
                 case '\r':      /* Enter = MODE / select / back */
                     task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_PRESSED);
-                    break;
-
-                case 'a': case 'n': case 'N':
-                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_MODE_PRESSED);
                     break;
 
                 case 'q': case 'Q':

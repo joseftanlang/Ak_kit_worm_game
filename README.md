@@ -1,7 +1,6 @@
 # Game built with AK Embedded Base Kit
 
 <div align="center">
-
   <a href="https://github.com/user-attachments/assets/6f043a43-5259-4eed-88e2-d772b11eac33">
     <video
       src="https://github.com/user-attachments/assets/6f043a43-5259-4eed-88e2-d772b11eac33"
@@ -12,7 +11,7 @@
 
 This repository contains the firmware for the worm game that runs on the AK Embedded Base Kit with STM32L151. The project is a hands-on example of event-driven embedded programming: the screen, buttons, buzzer, timers, EEPROM, and task scheduler work together to present a complete game loop rather than a single demo screen.
 
-The board is designed for embedded learning and prototyping. It combines a 1.54" OLED display, 3 push buttons, a buzzer, RS485, Qwiic, and Grove connectivity so you can study interaction, timing, persistence, and modular firmware architecture on real hardware.
+The board is designed for embedded learning and prototyping. It combines a 1.54" OLED display, 3 push buttons and a buzzer so you can study interaction, timing, persistence, and modular firmware architecture on real hardware.
 
 <div align="center">
   <a href="https://epcb.vn/products/ak-embedded-base-kit-lap-trinh-nhung-vi-dieu-khien-mcu">
@@ -20,7 +19,7 @@ The board is designed for embedded learning and prototyping. It combines a 1.54"
   </a>
 </div>
 
-## Quick Start
+<!-- ## Quick Start
 
 If you just want to understand the game quickly, this is the shortest path:
 
@@ -28,25 +27,26 @@ If you just want to understand the game quickly, this is the shortest path:
 2. Flash the application to the board at `0x08003000`.
 3. Use Mode to enter or confirm.
 4. Use Up and Down to move through menus and settings.
-5. Enter the worm screen, move the worm, eat apples, and avoid collisions to itself.
+5. Enter the worm screen, move the worm, eat apples, and avoid colliding with itself. -->
 
+<!--
 ```mermaid
 flowchart TD
- A[Boot board] --> B[Open game menu]
- B --> C[Enter worm screen]
- C --> D[Move with Up / Down]
- D --> E[Eat apples and grow]
- E --> F{Crash or win?}
- F -->|No| D
- F -->|Yes| G[Show result overlay]
- G --> H[Open score chart or return]
+ A[Boot board]  B[Open game menu]
+ B C[Enter worm screen]
+ C D[Move with Up / Down]
+ D  E[Eat apples and grow]
+ E  F{Crash or win?}
+ F |No| D
+ F |Yes| G[Show result overlay]
+ G  H[Open score chart or return]
 ```
-
+-->
 ## Contents
 
 Use this table to jump to major sections in this README.
 
-- [Quick Start](#quick-start)
+<!-- - [Quick Start](#quick-start) -->
 - [Contents](#contents)
 - [How To Read This Project](#how-to-read-this-project)
 - [What This Game Is About](#what-this-game-is-about)
@@ -55,10 +55,10 @@ Use this table to jump to major sections in this README.
 - [Memory Map](#memory-map)
 - [Game Flow](#game-flow)
 - [Game design](#game-design)
-- [Internal Game IDs and Tasks](#internal-game-ids-and-tasks)
-- [Settings](#settings)
+<!-- - [Internal Game IDs and Tasks](#internal-game-ids-and-tasks) -->
+<!-- - [Settings](#settings)
 - [Controls](#controls)
-- [Build](#build)
+- [Build](#build) -->
 
 ## How To Read This Project
 
@@ -126,12 +126,14 @@ The game is organized as a screen-driven application:
 The worm screen itself is also responsible for starting and stopping the background music loop, so the audio state always matches the visible game state.
 
 ## Game Sequence
+
 This is the entire game sequence of the worm game from start to end.
+
 <div align="center">
   <img src="resources/image/FPT_worm.io_w.png" alt="Startup 1" height = "512" />
 </div>
 
-## Game design
+## Game Design
 
 The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
 
@@ -175,7 +177,7 @@ When the player crashes the worm, an overlay appears with the final score and op
   <img src="resources/image/worm_charts.png" alt="Settings 1" width="512" height="256" />
 </div>
 
-On the WORLD LEADER RUN, a continuous animation of the worm moving from right to left would provide a visually engaging display of the player's progress. As the game progresses, the current position and score of the player would be prominently displayed on the chart, creating an immersive experience. The score would be retrieved from the non-volatile EEPROM memory, ensuring that high scores are accurately stored and preserved even after the game is powered off. To add an extra layer of competitive excitement, the top 3 high scores would be displayed on the chart, allowing players to see how they rank among the best.
+The Charts screen displays a visual representation of player progress and high scores. It retrieves stored scores from non-volatile EEPROM memory, ensuring that results persist across power cycles. The screen shows the top 3 recorded scores so players can compare their performance over time.
 
 ### Settings Screen
 
@@ -200,7 +202,7 @@ Design notes
 - Modularity: each gameplay system (worm, apples, score, collisions) is owned by a separate task, making it easy to change pacing or rules without touching rendering code.
 - Accessibility: simple 3-button controls and presets let new players start quickly without digging through menus.
 
-## Internal Game IDs and Tasks
+<!-- ## Internal Game IDs and Tasks
 
 The phrase “game ID” in this codebase is best understood as the internal task ID used by the scheduler. These are not player-facing IDs; they are numeric identifiers that let the firmware route messages to the correct task.
 
@@ -262,7 +264,7 @@ The available looped songs are:
 - `The Wheel On The Bus (BUS)`
 - `Jingle Bells (XMAS)`
 
-The game uses the selected sound both when entering the worm screen and while the screen is active, provided the buzzer is enabled.
+The selected music starts when entering the worm screen and loops while the game remains active. and while the screen is active, provided the buzzer is enabled.
 
 ### Buzzer Setting
 
@@ -299,11 +301,14 @@ In the worm screen:
 
 __Using a keyboard:__
 
-The code have been custmise to use a keyboard where you would need to firstly run the code from the application folder:
+The code has been customized to support keyboard input. where you would need to firstly run the code from the application folder:
+
 ```
 make com dev=/dev/ttyUSB0
 ```
+
 After this then you would be able to see the following example:
+
 ```
 taskID: 4       msgType:0x80    refCnt:1        sig:10       waitTime:0      exeTime:0
 taskID: 4       msgType:0x80    refCnt:1        sig:10       waitTime:0      exeTime:0
@@ -315,11 +320,12 @@ You can use the keyboard keys in the following table:
 | Keys | Command Output |
 | --- | --- |
 | 'W' or 'w' | UP BUTTON |
+| 'A' or 'a' | MODE BUTTON |
 | 'S' or 's' | DOWN BUTTON |
 | 'D' or 'd' | MODE BUTTON |
 | 'H' or 'h' | LONG MODE |
-
-
+| 'G' or 'g' | LONG MODE |
+| 'J' or 'j' | LONG MODE |
 
 ## Build
 
@@ -356,7 +362,7 @@ make flash
 - `application/` - firmware application sources and build system.
 - `boot/` - bootloader-related files.
 - `hardware/` - board images, schematics, and manufacturing resources.
-- `resources/` - bitmap and asset resources used by the game.
+- `resources/` - bitmap and asset resources used by the game. -->
 
 ## References
 

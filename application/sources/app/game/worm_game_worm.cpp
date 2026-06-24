@@ -2,10 +2,11 @@
 
 worm_game_t worm_game = {0};
 
+// get_worm_head retrieves the current position of the worm's head (the first segment in the trail) and stores it in the provided x and y pointers.
 static inline void get_worm_head(uint32_t *x, uint32_t *y)
 {
-    *x = worm_game.trail[0].x;
-    *y = worm_game.trail[0].y;
+	*x = worm_game.trail[0].x;
+	*y = worm_game.trail[0].y;
 }
 
 // worm_clamp_trail_length ensures that the worm's trail length does not exceed the maximum allowed length (WORM_MAX_TRAIL).
@@ -13,6 +14,7 @@ static uint16_t worm_clamp_trail_length(uint16_t length)
 {
 	return (length > WORM_MAX_TRAIL) ? WORM_MAX_TRAIL : length;
 }
+
 // worm_is_opposite_direction checks if the next direction is directly opposite to the current direction, which is not allowed in the game.
 static uint8_t worm_is_opposite_direction(worm_game_dir_t current_dir, worm_game_dir_t next_dir)
 {
@@ -21,6 +23,7 @@ static uint8_t worm_is_opposite_direction(worm_game_dir_t current_dir, worm_game
 			(current_dir == WORM_DIR_UP && next_dir == WORM_DIR_DOWN) ||
 			(current_dir == WORM_DIR_DOWN && next_dir == WORM_DIR_UP));
 }
+
 // worm_turn_left returns the new direction when the worm turns left from its current direction.
 static worm_game_dir_t worm_turn_left(worm_game_dir_t dir)
 {
@@ -37,6 +40,7 @@ static worm_game_dir_t worm_turn_left(worm_game_dir_t dir)
 		return WORM_DIR_RIGHT;
 	}
 }
+
 // worm_turn_right returns the new direction when the worm turns right from its current direction.
 static worm_game_dir_t worm_turn_right(worm_game_dir_t dir)
 {
@@ -53,6 +57,7 @@ static worm_game_dir_t worm_turn_right(worm_game_dir_t dir)
 		return WORM_DIR_RIGHT;
 	}
 }
+
 // worm_init initializes the worm's position, direction, length, and trail segments to their starting values at the beginning of the game.
 void worm_init(void)
 {
@@ -64,6 +69,7 @@ void worm_init(void)
 	worm_game.dir = (uint8_t)WORM_DIR_RIGHT;
 	worm_game.length = WORM_INITIAL_LENGTH;
 	worm_game.grow_pending = 0;
+
 	// Initialize the worm's trail segments to the starting position, with the head at the front and the body segments trailing behind it.
 	for (uint16_t i = 0; i < WORM_MAX_TRAIL; i++)
 	{
@@ -71,6 +77,7 @@ void worm_init(void)
 		worm_game.trail[i].x = 0;
 		worm_game.trail[i].y = 0;
 	}
+
 	// Set the initial trail segments based on the starting position and initial length of the worm, with each segment positioned behind the head.
 	for (uint16_t i = 0; i < worm_game.length; i++)
 	{
@@ -117,6 +124,7 @@ uint8_t worm_advance(void)
 		occupied_length--;
 	}
 
+	// Update the worm's head position based on its current direction, moving it by WORM_MOVE_STEP in the appropriate direction.
 	switch (worm_get_direction())
 	{
 	case WORM_DIR_RIGHT:
@@ -134,10 +142,10 @@ uint8_t worm_advance(void)
 	}
 
 	/* wrap around inside the game border (or screen if border not set) */
-	uint32_t bx = (worm_game_border.width != 0) ? worm_game_border.x : 0;             	//bx is the x position of the border, or 0 if border is not set
-	uint32_t by = (worm_game_border.height != 0) ? worm_game_border.y : 0;				//by is the y postition of the broder
-	uint32_t bw = (worm_game_border.width != 0) ? worm_game_border.width : SCR_WIDTH;	//bw is the width of the border, or the screen if border is not set
-	uint32_t bh = (worm_game_border.height != 0) ? worm_game_border.height : SCR_HEIGHT;//bh is the height of the border, or the screen if border is not set
+	uint32_t bx = (worm_game_border.width != 0) ? worm_game_border.x : 0;				 // bx is the x position of the border, or 0 if border is not set
+	uint32_t by = (worm_game_border.height != 0) ? worm_game_border.y : 0;				 // by is the y postition of the broder
+	uint32_t bw = (worm_game_border.width != 0) ? worm_game_border.width : SCR_WIDTH;	 // bw is the width of the border, or the screen if border is not set
+	uint32_t bh = (worm_game_border.height != 0) ? worm_game_border.height : SCR_HEIGHT; // bh is the height of the border, or the screen if border is not set
 
 	if ((uint32_t)worm_next_head.x + WORM_MOVE_STEP > bx + bw)
 	{
@@ -157,6 +165,7 @@ uint8_t worm_advance(void)
 		worm_next_head.y = (uint8_t)(by + bh - WORM_MOVE_STEP);
 	}
 
+	// Check if the worm's next head position overlaps with any of its own trail segments, indicating a collision with itself.
 	for (uint16_t i = 0; i < occupied_length; i++)
 	{
 		if (worm_game.trail[i].x == worm_next_head.x && worm_game.trail[i].y == worm_next_head.y)

@@ -6,8 +6,7 @@ worm_game_border_t worm_game_border = {
 	.x = BORDER_MARGIN,
 	.y = BORDER_MARGIN,
 	.width = 125,
-	.height = 60
-};
+	.height = 60};
 
 // Initialize the game border settings and draw the border rectangle on the screen.
 void border_settings(void)
@@ -17,6 +16,7 @@ void border_settings(void)
 	worm_game_border.width = 125;
 	worm_game_border.height = 60;
 
+	// Draw the border rectangle on the screen with a white color.
 	view_render.drawRect(
 		(int16_t)BORDER_MARGIN,
 		(int16_t)BORDER_MARGIN,
