@@ -57,7 +57,7 @@ static const uint8_t setting_star_count =
 
 static void view_scr_game_setting();
 static void setting_tick();
-static void setting_draw_background();
+// static void setting_draw_background();
 static void setting_draw_title();
 static void setting_draw_row(int index, int y, const char *label, const char *value);
 static void setting_toggle_selected_item();
@@ -262,22 +262,22 @@ static void setting_tick()
 }
 
 
-static void setting_draw_background()
-{
-    for (uint8_t i = 0; i < setting_star_count; i++)
-    {
-        if (((setting_anim_tick + i) & 0x01) == 0 ||
-            setting_stars[i].speed > 1)
-        {
-            view_render.drawPixel(setting_stars[i].x,
-                                  setting_stars[i].y,
-                                  WHITE);
-        }
-    }
+// static void setting_draw_background()
+// {
+//     for (uint8_t i = 0; i < setting_star_count; i++)
+//     {
+//         if (((setting_anim_tick + i) & 0x01) == 0 ||
+//             setting_stars[i].speed > 1)
+//         {
+//             view_render.drawPixel(setting_stars[i].x,
+//                                   setting_stars[i].y,
+//                                   WHITE);
+//         }
+//     }
 
-    view_render.drawRect(0, 0, 128, 64, WHITE);
-    view_render.drawFastHLine(0, 14, 128, WHITE);
-}
+//     view_render.drawRect(0, 0, 128, 64, WHITE);
+//     view_render.drawFastHLine(0, 14, 128, WHITE);
+// }
 
 static void setting_draw_title()
 {
@@ -293,16 +293,15 @@ static void setting_draw_row(int index, int y,
 {
     if (index == selected_item)
     {
-        view_render.fillRoundRect(4, y, 120,
-                                  SETTING_ROW_HEIGHT, 2, WHITE);
-        view_render.setTextColor(BLACK);
+        // view_render.fillRoundRect(4, y, 120,
+        //                           SETTING_ROW_HEIGHT, 2, WHITE);
+        // view_render.setTextColor(BLACK);
         view_render.setCursor(8, y + 2);
         view_render.print("> ");
     }
     else
     {
-        view_render.drawRoundRect(4, y, 120,
-                                  SETTING_ROW_HEIGHT, 2, WHITE);
+        // view_render.drawRoundRect(4, y, 120,SETTING_ROW_HEIGHT, 2, WHITE);
         view_render.setTextColor(WHITE);
         view_render.setCursor(8, y + 2);
         view_render.print("  ");
@@ -318,7 +317,7 @@ void view_scr_game_setting()
 {
     view_render.clear();
 
-    setting_draw_background();
+    // setting_draw_background();
     setting_draw_title();
 
     setting_draw_row(0, SETTING_ROW_TOP_Y,

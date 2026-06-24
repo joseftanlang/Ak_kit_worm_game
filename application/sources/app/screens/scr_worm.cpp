@@ -337,6 +337,9 @@ void scr_worm_handle(ak_msg_t *msg)
 		{
 			SCREEN_TRAN(scr_charts_handle, &scr_charts);
 		}
-		SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
+		else
+		{
+			SCREEN_TRAN(scr_worm_menu_game_handle, &scr_menu_game);
+		}
 	}
 }

@@ -209,21 +209,21 @@ void shell_rx_char(uint8_t c)
 {
 	static uint8_t esc_state = 0;
 
-	// if (esc_state == 0)
-	// {
-	// 	if (c == 'w' || c == 'W')
-	// 		controller_input("w");
-	// 	else if (c == 'a' || c == 'A')
-	// 		controller_input("a");
-	// 	else if (c == 's' || c == 'S')
-	// 		controller_input("s");
-	// 	else if (c == 'd' || c == 'D')
-	// 		controller_input("d");
+	if (esc_state == 0)
+	{
+		if (c == 'w' || c == 'W')
+			controller_input("w");
+		else if (c == 'a' || c == 'A')
+			controller_input("a");
+		else if (c == 's' || c == 'S')
+			controller_input("s");
+		else if (c == 'd' || c == 'D')
+			controller_input("d");
 
-	// 	if (c == 0x1B)
-	// 		esc_state = 1;
-	// 	return;
-	// }
+		if (c == 0x1B)
+			esc_state = 1;
+		return;
+	}
 
 	if (esc_state == 1)
 	{
@@ -231,25 +231,25 @@ void shell_rx_char(uint8_t c)
 		return;
 	}
 
-	// if (esc_state == 2)
-	// {
-	// 	switch (c)
-	// 	{
-	// 	case 'A':
-	// 		controller_input("w");
-	// 		break; // up
-	// 	case 'B':
-	// 		controller_input("s");
-	// 		break; // down
-	// 	case 'C':
-	// 		controller_input("d");
-	// 		break; // right
-	// 	case 'D':
-	// 		controller_input("a");
-	// 		break; // left
-	// 	}
-	// 	esc_state = 0;
-	// }
+	if (esc_state == 2)
+	{
+		switch (c)
+		{
+		case 'A':
+			controller_input("w");
+			break; // up
+		case 'B':
+			controller_input("s");
+			break; // down
+		case 'C':
+			controller_input("d");
+			break; // right
+		case 'D':
+			controller_input("a");
+			break; // left
+		}
+		esc_state = 0;
+	}
 }
 
 int32_t shell_ver(uint8_t *argv)
@@ -698,15 +698,15 @@ int32_t shell_lcd(uint8_t *argv)
 		view_render.update();
 		break;
 
-	case 'p':
-		// draw a single pixel
-		view_render.drawPixel(9, 1, WHITE);
-		view_render.drawPixel(13, 4, WHITE);
-		view_render.drawPixel(16, 7, WHITE);
-		view_render.update();
-		break;
+	// case 'p':
+	// 	// draw a single pixel
+	// 	view_render.drawPixel(9, 1, WHITE);
+	// 	view_render.drawPixel(13, 4, WHITE);
+	// 	view_render.drawPixel(16, 7, WHITE);
+	// 	view_render.update();
+	// 	break;
 
-	case 'd':
+	case 'p':
 		shell_lcd_dump_framebuffer();
 		break;
 

@@ -234,27 +234,47 @@ void task_polling_console()
 
         if (g_controller_mode)
         {
-            switch (c)
+            /* If the shell buffer is empty, a single game-key fires a game event directly.
+             * If the user has already started typing a command (shell.index > 0), or
+             * the key is not a recognised game key, fall through to normal shell handling
+             * so that commands like "lcd d" can still be used. */
+            if (shell.index == 0)
             {
-            case 'w': case 'W':
-                task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_PRESSED);
-                break;
+                bool handled = true;
+                switch (c)
+                {
+                case 'w': case 'W':
+                case 0x41: /* Arrow Up (ESC [ A) - simplified: treat 'A' as up when in controller mode */
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_PRESSED);
+                    break;
 
-            case 's': case 'S':
-                task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_DOWN_PRESSED);
-                break;
+                case 's': case 'S':
+                case 0x42: /* Arrow Down (ESC [ B) */
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_DOWN_PRESSED);
+                    break;
 
-            case 'a': case 'A':
-            // case 'd': case 'D':
-            // case ' ':
-            //     task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_PRESSED);
-            //     break;
+                case 'd': case 'D':
+                case ' ':       /* Space = MODE / select / back */
+                case '\r':      /* Enter = MODE / select / back */
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_MODE_PRESSED);
+                    break;
 
-            case 'n': case 'N':
-                task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_MODE_PRESSED);
-                break;
+                case 'a': case 'n': case 'N':
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_UP_MODE_PRESSED);
+                    break;
+
+                case 'q': case 'Q':
+                    task_post_pure_msg(AC_TASK_DISPLAY_ID, AC_DISPLAY_BUTON_DOWN_MODE_PRESSED);
+                    break;
+
+                default:
+                    handled = false;
+                    break;
+                }
+                if (handled)
+                    continue; /* consumed as game input, skip shell */
             }
-            continue;
+            /* Fall through to shell handling below (partial command or non-game key) */
         }
 
         /* shell fallback */

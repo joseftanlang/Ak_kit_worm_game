@@ -23,13 +23,13 @@ const task_t app_task_table[] = {
 	/*************************************************************************/
 	/* Worm Game TASK */
 	/*************************************************************************/
-	{WORM_GAME_APPLE_ID			,	TASK_PRI_LEVEL_3	,	worm_game_apple_handler		},
-	{WORM_GAME_WORM_ID			,	TASK_PRI_LEVEL_3	,	worm_game_worm_handler		},
-	{WORM_GAME_SCORE_ID			,	TASK_PRI_LEVEL_3	,	worm_game_score_handler		},
-	{WORM_GAME_EATING_ID		,	TASK_PRI_LEVEL_3	,	worm_game_eating_handler	},
-	{WORM_GAME_BORDER_ID		,	TASK_PRI_LEVEL_3	,	worm_game_border_handler	},
-	{WORM_GAME_LIVES_ID			,	TASK_PRI_LEVEL_3	,	worm_game_lives_handler		},
-	{WORM_GAME_GAMER_ID			,	TASK_PRI_LEVEL_3	,	worm_worm_gamer_handler		},
+	{WORM_GAME_APPLE_ID			,	TASK_PRI_LEVEL_4	,	worm_game_apple_handler		},
+	{WORM_GAME_WORM_ID			,	TASK_PRI_LEVEL_4	,	worm_game_worm_handler		},
+	{WORM_GAME_SCORE_ID			,	TASK_PRI_LEVEL_4	,	worm_game_score_handler		},
+	{WORM_GAME_EATING_ID		,	TASK_PRI_LEVEL_4	,	worm_game_eating_handler	},
+	{WORM_GAME_BORDER_ID		,	TASK_PRI_LEVEL_4	,	worm_game_border_handler	},
+	{WORM_GAME_LIVES_ID			,	TASK_PRI_LEVEL_4	,	worm_game_lives_handler		},
+	{WORM_GAME_GAMER_ID			,	TASK_PRI_LEVEL_4	,	worm_worm_gamer_handler		},
 
 	#if defined(TASK_ZIGBEE_EN)
 	{AC_TASK_ZIGBEE_ID			,	TASK_PRI_LEVEL_4	,	task_zigbee			},

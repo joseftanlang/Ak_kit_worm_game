@@ -136,21 +136,21 @@ This is the entire game sequence of the worm game from start to end.
 
 The game UI is structured into a few clear screens that guide the player from power-on to gameplay, settings, and score review. Each screen is designed to be compact and readable on the small OLED while providing the player with clear feedback and control.
 
-### Startup Screen
+<!-- ### Startup Screen
 
 <div align="center">
   <img src="resources/image/worm_screen.png" alt="Startup 1" width="512"/>
-</div>
+</div> -->
 <!-- <div style="width: 100%; text-align: center;">
   <img src="resources/image/worm_screen.png" alt="Startup 1" style="width: 100%; max-width: 100%; height: auto; display: inline-block;">
 </div> -->
 
 The startup screen shows the board and firmware identity, provides a brief boot animation and offers entry into the main app menu. It confirms hardware is initialized (display, buttons, buzzer) and gives a short visual cue if saved settings or scores were loaded successfully.
 
-### Menu Screen
+### Menu Screen (Initial Screen)
 
 <div align="center">
-  <img src="resources/image/worm_menu_screen_anim.gif" alt="Menu 1" width="512" height="256" />
+  <img src="resources/image/worm_menu_screen.png" alt="Menu 1" width="512" height="256" />
 </div>
 
 The menu screen is the central hub. Menu entries are arranged vertically and can be navigated with Up/Down; Mode enters or confirms. Visual highlights and simple icons make it easy to pick modes (Start Game, Settings, Charts). Menu animations are subtle to keep the UI responsive.
@@ -174,7 +174,7 @@ When the player crashes the worm, an overlay appears with the final score and op
 ### Settings Screen
 
 <div align="center">
-  <img src="resources/image/worm_setting_screen_anim.gif" alt="Settings 1" width="512" height="256" />
+  <img src="resources/image/worm_settings.png" alt="Settings 1" width="512" height="256" />
 </div>
 
 Settings let the player tune gameplay and audio quickly:
