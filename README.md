@@ -29,19 +29,6 @@ If you just want to understand the game quickly, this is the shortest path:
 4. Use Up and Down to move through menus and settings.
 5. Enter the worm screen, move the worm, eat apples, and avoid colliding with itself. -->
 
-<!--
-```mermaid
-flowchart TD
- A[Boot board]  B[Open game menu]
- B C[Enter worm screen]
- C D[Move with Up / Down]
- D  E[Eat apples and grow]
- E  F{Crash or win?}
- F |No| D
- F |Yes| G[Show result overlay]
- G  H[Open score chart or return]
-```
--->
 ## Contents
 
 Use this table to jump to major sections in this README.
@@ -124,6 +111,18 @@ The game is organized as a screen-driven application:
 7. The player can move to the score chart screen or back out to the menu.
 
 The worm screen itself is also responsible for starting and stopping the background music loop, so the audio state always matches the visible game state.
+
+```mermaid
+flowchart TD
+ A[Boot board]  --> B[Open game menu]
+ B --> C[Enter worm screen]
+ C --> D[Move with Up / Down]
+ D --> E[Eat apples and grow]
+ E --> F{Crash or win?}
+ F --> |No| D
+ F --> |Yes| G[Show result overlay]
+ G  --> H[Open score chart or return]
+```
 
 ## Game Sequence
 
