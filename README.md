@@ -1,13 +1,17 @@
 # Game built with AK Embedded Base Kit
 
 <div align="center">
-  <a href="https://github.com/user-attachments/assets/6f043a43-5259-4eed-88e2-d772b11eac33">
+  <a href="https://github.com/user-attachments/assets/9cfccd16-3064-4dce-b96d-ca94e178974f">
     <video
-      src="https://github.com/user-attachments/assets/6f043a43-5259-4eed-88e2-d772b11eac33"
+      src="https://github.com/user-attachments/assets/9cfccd16-3064-4dce-b96d-ca94e178974f"
       controls
     ></video>
   </a>
 </div>
+
+<p align="center">
+  <a href="https://github.com/user-attachments/assets/d0f88932-c4f4-4702-a43d-ff21c41f9db2">Worm Keyboard Game</a>
+</p>
 
 This repository contains the firmware for the worm game that runs on the AK Embedded Base Kit with STM32L151. The project is a hands-on example of event-driven embedded programming: the screen, buttons, buzzer, timers, EEPROM, and task scheduler work together to present a complete game loop rather than a single demo screen.
 
