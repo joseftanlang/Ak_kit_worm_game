@@ -1,9 +1,9 @@
 # Game built with AK Embedded Base Kit
 
 <div align="center">
-  <a href="https://github.com/user-attachments/assets/9cfccd16-3064-4dce-b96d-ca94e178974f">
+  <a href="https://github.com/user-attachments/assets/9e163a97-6063-408f-8b68-bad60333bbce">
     <video
-      src="https://github.com/user-attachments/assets/9cfccd16-3064-4dce-b96d-ca94e178974f"
+      src="https://github.com/user-attachments/assets/9e163a97-6063-408f-8b68-bad60333bbce"
       controls
     ></video>
   </a>
